@@ -17,4 +17,5 @@ public class ResponseMessage<E> { //Generic yapilar bize loose coupling bir yapi
     private E object;
     private String message;
     private HttpStatus httpStatus;
+
 }
