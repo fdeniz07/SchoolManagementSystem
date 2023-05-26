@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class UserRole { //ara bir tablo oldugu icin serilestirmeye gerek yok. Ama kullanilmasinda sakinca yoktur
 
     @Id
