@@ -48,4 +48,14 @@ public class LessonProgram implements Serializable {
     private Set<Student> students;
 
     //!!! @PreRemove yazilacak
+    @PreRemove //Bir islem yapmadan önce yapilacaklar - Kayit silindiginde, Student'deki ve Teacher'deki LessonProgram iliskisini ve recordunu siliyoruz.
+    private void removeLessonProgramFromStudent() {
+        teachers.forEach((t) -> {
+            t.getLessonsProgramList().remove(this);
+        });
+
+        students.forEach((s) -> {
+            s.getLessonsProgramList().remove(this);
+        });
+    }
 }

@@ -1,6 +1,5 @@
 package com.schoolmanagement.entity.concretes;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.schoolmanagement.entity.abstracts.User;
 import lombok.*;
@@ -42,12 +41,13 @@ public class Student extends User {
     private List<StudentInfo> studentInfos;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "student_lessonprogramm",
             joinColumns = @JoinColumn(name="student_id"),
             inverseJoinColumns = @JoinColumn(name = "lesson_program_id")
     )
-    private Set<LessonProgram> lessonProgramList;
+    private Set<LessonProgram> lessonsProgramList;  // !!! Duzeltildi
 
 
     @ManyToMany

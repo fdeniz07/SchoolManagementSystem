@@ -1,5 +1,6 @@
 package com.schoolmanagement.entity.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.schoolmanagement.entity.enums.Note;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,9 @@ public class StudentInfo implements Serializable {
 
     private String infoNote;
 
+
     @ManyToOne
+    @JsonIgnoreProperties("teacher")
     private Teacher teacher;
 
     @ManyToOne
@@ -39,6 +42,7 @@ public class StudentInfo implements Serializable {
 
     //!!! Lesson - EducationTerm
     @ManyToOne
+    @JsonIgnoreProperties("lesson")
     private Lesson lesson;
 
     @OneToOne
