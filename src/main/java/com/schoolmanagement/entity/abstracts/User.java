@@ -51,3 +51,31 @@ public abstract class User implements Serializable { //Ortak classlar icin bu cl
 
     private Gender gender;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
