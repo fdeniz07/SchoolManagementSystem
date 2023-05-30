@@ -18,6 +18,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder //Alt siniflarin User sinifinin builder özelliklerini kullanabilmesine izin verir
+
+//@SuperBuilder --> ilgili sinifin field'larini bu classdan türetilen siniflara aktarirken (sadece java tarafinda). Eger atada @SuperBuilder varsa child da da eklenir
+//@MappedSuperclass --> annotation'u da db de table olusturmamasina ragmen türettigi entitylere field'larini aktariyor ve türetilen entity siniflarinin db de kolonlarinin olusmasini sagliyor
+//@Builder --> bize farkli farkli parametreli constructor olusturmamizi saglar. Eger
 public abstract class User implements Serializable { //Ortak classlar icin bu class'i Base olarak kullanacagiz
 
     @Id

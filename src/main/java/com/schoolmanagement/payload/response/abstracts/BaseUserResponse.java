@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@MappedSuperclass
+//@MappedSuperclass --> response de gereksiz bir annotation
 public abstract class BaseUserResponse {
 
     private Long userId;

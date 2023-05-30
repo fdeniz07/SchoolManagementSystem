@@ -9,8 +9,11 @@ import java.util.Optional;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
 
-    @Query("select r from UserRole r where r.roleType = ?1") //PHQL olarak  sorgu olusturuldu
-
+    @Query("select r from UserRole r where r.roleType = ?1") //PHQL olarak  sorgu olusturuldu (?1 ilk parametreyi getir (roleType))
     Optional<UserRole> findByERoleEquals(RoleType roleType);
+
+
+    @Query("select (count(r)>0) from UserRole r where r.roleType=?1")
+    boolean existsByERoleEquals(RoleType roleType);
 
 }
