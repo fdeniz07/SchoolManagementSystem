@@ -9,10 +9,13 @@ import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.repository.*;
 import com.schoolmanagement.utils.Messages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +41,8 @@ public class AdminService {
         admin.setBuilt_in(false);
 
         //Admin nesnesinin built_il field'ini true'ye cekiyoruz --Trick nokta
-        if (Objects.equals(request.getUsername(), "Admin")) admin.setBuilt_in(true);
+        if (Objects.equals(request.getUsername(), "Admin"))
+            admin.setBuilt_in(true); //Admin olarak yazinca otomatik built_in oluyor
 
         //!!! admin rolü veriliyor
         admin.setUserRole(userRoleService.getUserRole(RoleType.ADMIN)); // Rolü repositoryde degil service de atiyoruz ki dönen exception
@@ -82,6 +86,13 @@ public class AdminService {
 
     /*
          ÖDEV -- Yukardaki duplicate methodunu 4 parametreli hale getirmek istersem ???  - Vararrgs
+
+
+
+
+
+
+
     */
 
     protected Admin createAdminForSave(AdminRequest request) {
@@ -110,7 +121,38 @@ public class AdminService {
                 .gender(admin.getGender())
                 .ssn(admin.getSsn())
                 .build();
+    }
 
+
+    //Not: getAll() *********************************************************************************************************************************
+    public Page<Admin> getAllAdmin(Pageable pageable) {
+
+        return adminRepository.findAll(pageable);
+
+    }
+
+    //Not: delete() *********************************************************************************************************************************
+    public String deleteAdmin(Long id) {
+
+        Optional<Admin> admin = adminRepository.findById(id); //Optional yoksa, bos gelir (OrElseThrow ile de cözülebilir)
+
+        //eger bu id de bir admin varsa getirir ve isBuilt_in özelligi true (silinemez) ise handle et
+        if (admin.isPresent() && admin.get().isBuilt_in()) {
+            throw new ConflictException(Messages.NOT_PERMITTED_METHOD_MESSAGE);
+        }
+
+        if (admin.isPresent()) {
+            adminRepository.deleteById(id);
+
+            return "Admin is deleted successfully";
+        }
+
+        return Messages.NOT_FOUND_USER_MESSAGE;
+    }
+
+    //Runner tarafi icin gerekli method
+    public long countAllAdmin() {
+        return adminRepository.count();
     }
 }
 
