@@ -1,13 +1,14 @@
 package com.schoolmanagement.security.service;
 
 import com.schoolmanagement.entity.concretes.*;
-import com.schoolmanagement.exception.ConflictException;
 import com.schoolmanagement.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -20,6 +21,12 @@ public class UserDetailsServiceImpl implements UserDetailsService { //Bu sinif i
     private final TeacherRepository teacherRepository;
 
     @Override
+    @Transactional // Bir nevi UnitOfWorks DP nin yaptigi isi yapiyor. Metot seviyesinde ya da class seviyesinde istedigimiz yerde kullanabiliyoruz
+    /*
+        Bu özel durumda, loadUserByUsername methodu kullanıcının veritabanından bilgilerini yüklemek için farklı repository'leri kullanır.
+        Bu repository'lerden her biri ayrı bir veritabanı işlemi gerçekleştirir. @Transactional annotasyonu, tüm bu işlemlerin tek bir transaction içinde
+        gerçekleştirilmesini sağlar. Yani, eğer herhangi bir veritabanı işlemi başarısız olursa, tüm işlemler geri alınır (rollback) ve veritabanı tutarlı bir durumda kalır.
+     */
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Student student = studentRepository.findByUsernameEquals(username);
@@ -70,6 +77,6 @@ public class UserDetailsServiceImpl implements UserDetailsService { //Bu sinif i
             );
         }
         //TODO --> Security katmani icin exception handle class'i olusturulacak
-        throw new ConflictException("User not found");
+        throw new UsernameNotFoundException("User '" + username + "' not found"); //Spring Security'e ait bir exception
     }
 }
