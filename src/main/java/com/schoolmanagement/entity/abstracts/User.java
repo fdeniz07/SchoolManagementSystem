@@ -21,7 +21,12 @@ import java.time.LocalDate;
 
 //@SuperBuilder --> ilgili sinifin field'larini bu classdan türetilen siniflara aktarirken (sadece java tarafinda). Eger atada @SuperBuilder varsa child da da eklenir
 //@MappedSuperclass --> annotation'u da db de table olusturmamasina ragmen türettigi entitylere field'larini aktariyor ve türetilen entity siniflarinin db de kolonlarinin olusmasini sagliyor
-//@Builder --> bize farkli farkli parametreli constructor olusturmamizi saglar. Eger
+//@Builder(toBuilder = true) --> bize farkli farkli parametreli constructor olusturmamizi saglar. Yeni bir nesne olusturmak yerine varolan nesnenin kopyasini alarak degisiklik yapmamizi saglar. Eklenen class icin
+            //Builder DP olusturuyor. Default da degeri false gelir.
+            /*
+                         Builder neseyi Örnek örnek = Örnek.özellik1().özellik2().build gibi build etmeye yararken, toBuilder olan bir nesnenin üzerinden farklı bir nesne yapmaya yarıyor.
+                         Örnek yeni örnek = örnek.toBuilder().özellik1(farklı bir özellik).build
+             */
 public abstract class User implements Serializable { //Ortak classlar icin bu class'i Base olarak kullanacagiz
 
     @Id
