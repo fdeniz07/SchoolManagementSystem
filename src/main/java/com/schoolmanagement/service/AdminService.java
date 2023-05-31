@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class AdminService {
     private final GuestUserRepository guestUserRepository;
 
     private final UserRoleService userRoleService;
+    private final PasswordEncoder passwordEncoder;
 
     // Not: save()  ********************************************************************************************************************************
     public ResponseMessage save(AdminRequest request) {
@@ -48,7 +50,9 @@ public class AdminService {
         admin.setUserRole(userRoleService.getUserRole(RoleType.ADMIN)); // Rolü repositoryde degil service de atiyoruz ki dönen exception
         // handle edilebilsin
 
-        //!!! Not: password plain text --> encode (Security ile yazacagiz)
+        //!!! Password encode  ediliyor (Security ile yazilir)
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+
 
         Admin savedData = adminRepository.save(admin);
 
