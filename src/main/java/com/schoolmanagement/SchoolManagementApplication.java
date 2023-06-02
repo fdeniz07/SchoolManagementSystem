@@ -48,7 +48,7 @@ public class SchoolManagementApplication implements CommandLineRunner { //Comman
         if (adminService.countAllAdmin() == 0) {
 
             AdminRequest admin = new AdminRequest();
-            admin.setUsername("admin");
+            admin.setUsername("Admin");
             admin.setSsn("987-99-1234");
             admin.setPassword("12345678");
             admin.setName("Admin");
