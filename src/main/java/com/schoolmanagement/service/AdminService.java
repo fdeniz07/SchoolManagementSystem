@@ -140,6 +140,8 @@ public class AdminService {
                 .name(admin.getName())
                 .surname(admin.getSurname())
                 .phoneNumber(admin.getPhoneNumber())
+                .birthDay(admin.getBirthDay())
+                .birthPlace(admin.getBirthPlace())
                 .gender(admin.getGender())
                 .ssn(admin.getSsn())
                 .build();

@@ -4,7 +4,6 @@ import com.schoolmanagement.payload.request.abstracts.BaseUserRequest;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
