@@ -17,6 +17,7 @@ public class DeanDto {
                 .password(deanRequest.getPassword())
                 .ssn(deanRequest.getSsn())
                 .birthDay(deanRequest.getBirthDay())
+                .birthPlace(deanRequest.getBirthPlace())
                 .phoneNumber(deanRequest.getPhoneNumber())
                 .gender(deanRequest.getGender())
                 .build();

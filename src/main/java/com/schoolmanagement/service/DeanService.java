@@ -61,13 +61,13 @@ public class DeanService {
 
     private Dean createDtoForDean(DeanRequest deanRequest) { //createDtoToPOJO
 
-        return deanDto.dtoDean(deanRequest); //Injection yaparak (1.Yol - kisa)
+        return deanDto.dtoDean(deanRequest); //Injection yaparak (1.Yol - kisa) --> Tüm bean ler bir klasörde toplanmali(config-->CreateObjectBean)
 
     }
 
     private DeanResponse createDeanResponse(Dean dean) {
 
-        return DeanResponse.builder()  //injection yapmadan (2.Yol - uzun)
+        return DeanResponse.builder()  //injection yapmadan / builder ile (2.Yol - uzun)
                 .userId(dean.getId())
                 .username(dean.getUsername())
                 .name(dean.getName())
@@ -83,6 +83,7 @@ public class DeanService {
     //Not: updateById() *********************************************************************************************************************************
     public ResponseMessage<DeanResponse> update(DeanRequest newDean, Long deanId) {
 
+        //  checkDeanExists(deanId);  // tekrarlanan kisim icin
         Optional<Dean> dean = deanRepository.findById(deanId);
 
         //dean object bos olma kontrolü
@@ -127,13 +128,15 @@ public class DeanService {
     //Not: delete() *********************************************************************************************************************************
     public ResponseMessage<?> deleteDean(Long deanId) {
 
-        Optional<Dean> dean = deanRepository.findById(deanId);
+        checkDeanExists(deanId);  // tekrarlanan kisim icin
+
+       /* Optional<Dean> dean = deanRepository.findById(deanId);
 
         //dean object bos olma kontrolü
         if (!dean.isPresent()) { //isPresent yerine isEmpty de kullanilabilir (o zaman ! gerek yok)
 
             throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER2_MESSAGE, deanId));
-        }
+        }*/
 
         deanRepository.deleteById(deanId);
 
@@ -148,17 +151,19 @@ public class DeanService {
 
         // ODEV : asagida goz kanatan kod grubu methoid haline cevrilip cagirilacak
 
-        Optional<Dean> dean = deanRepository.findById(deanId);
+        checkDeanExists(deanId);  // tekrarlanan kisim icin
+
+        /*Optional<Dean> dean = deanRepository.findById(deanId);
 
         if (!dean.isPresent()) { // isEmpty() de kullanilabilir
 
             throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER2_MESSAGE, deanId));
-        }
+        }*/
 
         return ResponseMessage.<DeanResponse>builder()
                 .message("Dean Successfully found")
                 .httpStatus(HttpStatus.OK)
-                .object(createDeanResponse(dean.get()))
+                .object(createDeanResponse(checkDeanExists(deanId).get()))// .object(createDeanResponse(dean.get()))
                 .build();
 
     }
@@ -186,6 +191,17 @@ public class DeanService {
 
         return deanRepository.findAll(pageable).map(this::createDeanResponse);
     }
+
+
+    // Not: tekrarlanan kod blogu icin yazilan method
+    private Optional<Dean> checkDeanExists(Long deanId) {
+        Optional<Dean> dean = deanRepository.findById(deanId);
+        if (!dean.isPresent()) {
+            throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER2_MESSAGE, deanId));
+        }
+        return dean;
+    }
+
 }
 
 
