@@ -1,8 +1,10 @@
 package com.schoolmanagement.controller;
 
 import com.schoolmanagement.payload.request.EducationTermRequest;
+import com.schoolmanagement.payload.request.ViceDeanRequest;
 import com.schoolmanagement.payload.response.EducationTermResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
+import com.schoolmanagement.payload.response.ViceDeanResponse;
 import com.schoolmanagement.service.EducationTermService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -60,9 +62,22 @@ public class EducationTermController {
     //ÖDEV
 
     // Not :  delete() ************************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    @DeleteMapping("delete/{id}") //http://localhost:8080/educationTerms/delete/1
+    public ResponseMessage<?> delete(@PathVariable Long id) {//Geri dönen bir mesaj olmayacagi icin ResponseMessage<?> kullandik
+
+        return educationTermService.deleteById(id);
+    }
 
 
     // Not :  updateById() ********************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    @DeleteMapping("updateById/{id}") //http://localhost:8080/educationTerms/updateById/1
+    public ResponseMessage<EducationTermResponse> updateById(@RequestBody @Valid EducationTermRequest educationTermRequest
+            , @PathVariable Long id) {
+
+        return educationTermService.update(educationTermRequest, id);
+    }
 }
 
 
