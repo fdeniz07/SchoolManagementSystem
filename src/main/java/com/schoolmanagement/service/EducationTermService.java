@@ -1,12 +1,14 @@
 package com.schoolmanagement.service;
 
 import com.schoolmanagement.entity.concretes.EducationTerm;
+import com.schoolmanagement.entity.concretes.ViceDean;
 import com.schoolmanagement.exception.InvalidTimeException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.request.EducationTermRequest;
 import com.schoolmanagement.payload.response.EducationTermResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.repository.EducationTermRepository;
+import com.schoolmanagement.utils.CheckParameterUpdateMethod;
 import com.schoolmanagement.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -109,6 +112,58 @@ public class EducationTermService {
         }
 
         return educationTermRepository.findAll(pageable).map(this::createEducationTermResponse);
+    }
+
+    // Not :  delete() ************************************************************************************************************************************
+    public ResponseMessage<?> deleteById(Long id) {
+
+        Optional<EducationTerm> educationTerm = educationTermRepository.findById(id);
+
+        if (educationTerm.isEmpty()) {
+            throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id));
+        }
+
+        educationTermRepository.deleteById(id);
+
+        return ResponseMessage.builder()
+                .message("Education Term Deleted")
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    // Not :  updateById() ********************************************************************************************************************************
+    public ResponseMessage<EducationTermResponse> update(EducationTermRequest newEducationTerm, Long id) {
+
+        Optional<EducationTerm> educationTerm = educationTermRepository.findById(id);
+
+        if (educationTerm.isEmpty()) {
+            throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id));
+        }
+
+        EducationTerm updatedEducationTerm = createUpdatedEducationTerm(newEducationTerm, id);
+
+        educationTermRepository.save(updatedEducationTerm);
+
+        //!!! Response objesini olusturuluyor
+        return ResponseMessage.<EducationTermResponse>builder()
+                .message("Education Term Updated")
+                .object(createEducationTermResponse(updatedEducationTerm))
+                .httpStatus(HttpStatus.CREATED)
+                .build();
+
+    }
+
+    //DTO --> POJO
+    private EducationTerm createUpdatedEducationTerm(EducationTermRequest request, Long id) {
+
+        return EducationTerm.builder()
+                .id(id)
+                .term(request.getTerm())
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .lastRegistrationDate(request.getLastRegistrationDate())
+                .build();
+
     }
 }
 
