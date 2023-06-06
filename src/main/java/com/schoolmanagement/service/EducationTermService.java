@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,47 +116,56 @@ public class EducationTermService {
     }
 
     // Not :  delete() ************************************************************************************************************************************
-    public ResponseMessage<?> deleteById(Long id) {
+    public ResponseMessage<?> delete(Long id) {
 
-        Optional<EducationTerm> educationTerm = educationTermRepository.findById(id);
-
-        if (educationTerm.isEmpty()) {
-            throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id));
+        //!!! Acaba var mi kontrolü
+        if (!educationTermRepository.existsById(id)) {
+            throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id)); //Bu id yoksa hata firlat
         }
 
         educationTermRepository.deleteById(id);
 
         return ResponseMessage.builder()
-                .message("Education Term Deleted")
+                .message("Education Term deleted successfuly")
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
 
     // Not :  updateById() ********************************************************************************************************************************
-    public ResponseMessage<EducationTermResponse> update(EducationTermRequest newEducationTerm, Long id) {
+    public ResponseMessage<EducationTermResponse> update(EducationTermRequest request, Long id) {
 
-        Optional<EducationTerm> educationTerm = educationTermRepository.findById(id);
-
-        if (educationTerm.isEmpty()) {
+        //!!! id kontrolü
+        if (!educationTermRepository.existsById(id)) {
             throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id));
         }
 
-        EducationTerm updatedEducationTerm = createUpdatedEducationTerm(newEducationTerm, id);
+        // !!! getStartDate ve lastRegistrationDate kontrolu
+        if (request.getStartDate() != null && request.getLastRegistrationDate() != null) {
+            if (request.getLastRegistrationDate().isAfter(request.getStartDate())) {
+                throw new ResourceNotFoundException(Messages.EDUCATION_START_DATE_IS_EARLIER_THAN_LAST_REGISTRATION_DATE);
+            }
+        }
 
+        // !!! startDate-endDate kontrolu
+        if (request.getStartDate() != null && request.getEndDate() != null) {
+            if (request.getEndDate().isBefore(request.getStartDate())) {
+                throw new ResourceNotFoundException(Messages.EDUCATION_END_DATE_IS_EARLIER_THAN_START_DATE);
+            }
+        }
+        EducationTerm updatedEducationTerm = createUpdatedEducationTerm(request, id);
         educationTermRepository.save(updatedEducationTerm);
 
         //!!! Response objesini olusturuluyor
-        return ResponseMessage.<EducationTermResponse>builder()
-                .message("Education Term Updated")
+        ResponseMessage.ResponseMessageBuilder<EducationTermResponse> responseMessageBuilder = ResponseMessage.builder();
+        return responseMessageBuilder
                 .object(createEducationTermResponse(updatedEducationTerm))
                 .httpStatus(HttpStatus.CREATED)
+                .message("Education Term Updated Successfully")
                 .build();
-
     }
 
     //DTO --> POJO
     private EducationTerm createUpdatedEducationTerm(EducationTermRequest request, Long id) {
-
         return EducationTerm.builder()
                 .id(id)
                 .term(request.getTerm())
@@ -163,8 +173,11 @@ public class EducationTermService {
                 .endDate(request.getEndDate())
                 .lastRegistrationDate(request.getLastRegistrationDate())
                 .build();
-
     }
+
+   // EDUCATION-TERM-SERVICE
+// ODEV-1 : ya yoksa kontrolleri method uzerinden cagrilmali
+// ODEV-2 : save ve update methodalrindaki tarih kontrolleri ayri bir method uzerinden cagrilmali
 }
 
 
