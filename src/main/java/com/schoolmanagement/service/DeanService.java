@@ -9,6 +9,7 @@ import com.schoolmanagement.payload.response.DeanResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.repository.DeanRepository;
 import com.schoolmanagement.utils.CheckParameterUpdateMethod;
+import com.schoolmanagement.utils.CheckUniqueFields;
 import com.schoolmanagement.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,16 +30,16 @@ import java.util.stream.Collectors;
 public class DeanService {
 
     private final DeanRepository deanRepository;
-    private final AdminService adminService;
     private final DeanDto deanDto;
     private final UserRoleService userRoleService;
     private final PasswordEncoder passwordEncoder;
+    private final CheckUniqueFields checkUniqueFields;
 
     //Not: save() *********************************************************************************************************************************
     public ResponseMessage<DeanResponse> save(DeanRequest deanRequest) {
 
         //!!! Dublicate kontrolü (unique alanlar daha önceden kullanilmamis olmali) --checkDublucate -->utils altina tasinabilir
-        adminService.checkDuplicate(deanRequest.getUsername(),
+        checkUniqueFields.checkDuplicate(deanRequest.getUsername(),
                 deanRequest.getSsn(),
                 deanRequest.getPhoneNumber());
 
@@ -92,7 +93,7 @@ public class DeanService {
             throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER2_MESSAGE, deanId));
         } else if (!CheckParameterUpdateMethod.checkParameter(dean.get(), newDean)) { //dean.get() optional yapi oldugu icin dean'a get metodu ile ulasabiliriz
 
-            adminService.checkDuplicate(newDean.getUsername(), newDean.getSsn(), newDean.getPhoneNumber()); //tek parametre degistirildiginde senaryo postmande test edilmeli
+            checkUniqueFields.checkDuplicate(newDean.getUsername(), newDean.getSsn(), newDean.getPhoneNumber()); //tek parametre degistirildiginde senaryo postmande test edilmeli
 
         }
 

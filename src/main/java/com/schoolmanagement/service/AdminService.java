@@ -9,7 +9,7 @@ import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.repository.*;
 import com.schoolmanagement.utils.CheckUniqueFields;
 import com.schoolmanagement.utils.Messages;
-import com.schoolmanagement.utils.mappers.AdminDto;
+import com.schoolmanagement.payload.mappers.AdminMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ public class AdminService {
     private final UserRoleService userRoleService;
     private final PasswordEncoder passwordEncoder;
     private final CheckUniqueFields checkUniqueFields; //Unique alanlarin kontrolü icin DI yapildi
-    private final AdminDto adminDto;
+    private final AdminMapper adminMapper;
 
     // Not: save()  ********************************************************************************************************************************
     public ResponseMessage save(AdminRequest request) {
@@ -37,7 +37,7 @@ public class AdminService {
         checkUniqueFields.checkDuplicate(request.getUsername(), request.getSsn(), request.getPhoneNumber()); // sadelestirildi
 
         //!!! Admin nesnesini builder ile olusturuyoruz
-        Admin admin = adminDto.createAdminForSave(request); //Not: dto - pojo --> mapper gerekli
+        Admin admin = adminMapper.createAdminForSave(request); //Not: dto - pojo --> mapper gerekli
         admin.setBuilt_in(false);
 
         //Admin nesnesinin built_il field'ini true'ye cekiyoruz --Trick nokta
@@ -55,7 +55,7 @@ public class AdminService {
         return ResponseMessage.<AdminResponse>builder()
                 .message("Admin saved")
                 .httpStatus(HttpStatus.CREATED)
-                .object(adminDto.createResponse(savedData)) //Not: pojo - dto --> mapper gerekli
+                .object(adminMapper.createResponse(savedData)) //Not: pojo - dto --> mapper gerekli
                 .build();
     }
 
