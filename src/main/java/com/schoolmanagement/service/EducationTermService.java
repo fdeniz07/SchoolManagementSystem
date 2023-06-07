@@ -7,7 +7,9 @@ import com.schoolmanagement.payload.request.EducationTermRequest;
 import com.schoolmanagement.payload.response.EducationTermResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.repository.EducationTermRepository;
+import com.schoolmanagement.utils.CheckValidDates;
 import com.schoolmanagement.utils.Messages;
+import com.schoolmanagement.payload.mappers.EducationTermMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,19 +27,12 @@ import java.util.stream.Collectors;
 public class EducationTermService {
 
     private final EducationTermRepository educationTermRepository;
+    private final EducationTermMapper educationTermMapper;
 
     //Not: save() **************************************************************************************************************************************
     public ResponseMessage<EducationTermResponse> save(EducationTermRequest request) {
 
-        //!!! Son Kayit tarihi, ders döneminin baslangic tarihinden önce olmalidir
-        if (request.getLastRegistrationDate().isAfter(request.getStartDate())) {
-            throw new InvalidTimeException(Messages.EDUCATION_START_DATE_IS_EARLIER_THAN_LAST_REGISTRATION_DATE);
-        }
-
-        //!!! Bitis tarihi baslangic tarihinden büyük olmamali
-        if (request.getEndDate().isBefore(request.getStartDate())) {
-            throw new InvalidTimeException(Messages.EDUCATION_END_DATE_IS_EARLIER_THAN_START_DATE);
-        }
+        CheckValidDates.checkLastRegistrationDate(request);
 
         //!!! Ayni term ve baslangic tarihine sahip birden fazla kayit var mi kontrolü
         if (educationTermRepository.existsByTermAndYear(request.getTerm(), request.getStartDate().getYear())) {
@@ -45,35 +40,13 @@ public class EducationTermService {
         }
 
         //!!! save metoduna dto --> POJO dönüsümü yapip gönderiyoruz
-        EducationTerm savedEducationterm = educationTermRepository.save(createEducationTerm(request));
+        EducationTerm savedEducationterm = educationTermRepository.save(educationTermMapper.createEducationTerm(request));
 
         //!!! Response objesini olusturuluyor
         return ResponseMessage.<EducationTermResponse>builder()
                 .message("Education Term created")
-                .object(createEducationTermResponse(savedEducationterm))
+                .object(educationTermMapper.createEducationTermResponse(savedEducationterm))
                 .httpStatus(HttpStatus.CREATED)
-                .build();
-    }
-
-    // Dto to Pojo
-    private EducationTerm createEducationTerm(EducationTermRequest request) {
-
-        return EducationTerm.builder()
-                .term(request.getTerm())
-                .startDate(request.getStartDate())
-                .endDate(request.getLastRegistrationDate())
-                .lastRegistrationDate(request.getLastRegistrationDate())
-                .build();
-    }
-
-    // Pojo to Dto
-    private EducationTermResponse createEducationTermResponse(EducationTerm response) {
-        return EducationTermResponse.builder()
-                .id(response.getId())
-                .term(response.getTerm())
-                .startDate(response.getStartDate())
-                .endDate(response.getEndDate())
-                .lastRegistrationDate(response.getLastRegistrationDate())
                 .build();
     }
 
@@ -87,7 +60,7 @@ public class EducationTermService {
         }
 
         //!!! POJO --> DTO dönüsümü ile response hazirlaniyor
-        return createEducationTermResponse(educationTermRepository.findByIdEquals(id));  // findById de calisir ama biz elle yaziyoruz PQL yazmak icin
+        return educationTermMapper.createEducationTermResponse(educationTermRepository.findByIdEquals(id));  // findById de calisir ama biz elle yaziyoruz PQL yazmak icin
     }
 
     //Not: getAll() *************************************************************************************************************************************
@@ -95,7 +68,7 @@ public class EducationTermService {
 
         return educationTermRepository.findAll()
                 .stream()
-                .map(this::createEducationTermResponse)
+                .map(educationTermMapper::createEducationTermResponse)
                 .collect(Collectors.toList());
 
     }
@@ -108,7 +81,7 @@ public class EducationTermService {
             pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         }
 
-        return educationTermRepository.findAll(pageable).map(this::createEducationTermResponse);
+        return educationTermRepository.findAll(pageable).map(educationTermMapper::createEducationTermResponse);
     }
 
     // Not :  delete() ************************************************************************************************************************************
@@ -118,7 +91,6 @@ public class EducationTermService {
         if (!educationTermRepository.existsById(id)) {
             throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id)); //Bu id yoksa hata firlat
         }
-
         educationTermRepository.deleteById(id);
 
         return ResponseMessage.builder()
@@ -148,30 +120,37 @@ public class EducationTermService {
                 throw new ResourceNotFoundException(Messages.EDUCATION_END_DATE_IS_EARLIER_THAN_START_DATE);
             }
         }
-        EducationTerm updatedEducationTerm = createUpdatedEducationTerm(request, id);
+        EducationTerm updatedEducationTerm = educationTermMapper.createUpdatedEducationTerm(request, id);
         educationTermRepository.save(updatedEducationTerm);
 
         //!!! Response objesini olusturuluyor
         ResponseMessage.ResponseMessageBuilder<EducationTermResponse> responseMessageBuilder = ResponseMessage.builder();
         return responseMessageBuilder
-                .object(createEducationTermResponse(updatedEducationTerm))
+                .object(educationTermMapper.createEducationTermResponse(updatedEducationTerm))
                 .httpStatus(HttpStatus.CREATED)
                 .message("Education Term Updated Successfully")
                 .build();
     }
 
-    //DTO --> POJO
-    private EducationTerm createUpdatedEducationTerm(EducationTermRequest request, Long id) {
-        return EducationTerm.builder()
-                .id(id)
-                .term(request.getTerm())
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
-                .lastRegistrationDate(request.getLastRegistrationDate())
-                .build();
+    // Not :  updateById() ********************************************************************************************************************************
+    public EducationTerm getById(Long educationTermId) {
+
+        checkEducationTermExists(educationTermId);
+
+        return educationTermRepository.findByIdEquals(educationTermId);
+
     }
 
-   // EDUCATION-TERM-SERVICE
+
+    //!!! ODEV-1 : ya yoksa kontrolleri method uzerinden cagrilmali
+    private void checkEducationTermExists(Long id) {
+        if (!educationTermRepository.existsByIdEquals(id)) {
+            throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id));
+        }
+    }
+
+
+    // EDUCATION-TERM-SERVICE
 // ODEV-1 : ya yoksa kontrolleri method uzerinden cagrilmali
 // ODEV-2 : save ve update methodalrindaki tarih kontrolleri ayri bir method uzerinden cagrilmali
 }

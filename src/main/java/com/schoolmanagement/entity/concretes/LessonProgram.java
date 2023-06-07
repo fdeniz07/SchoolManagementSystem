@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
@@ -28,13 +29,13 @@ public class LessonProgram implements Serializable {
     private Day day;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "US")
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "US")
-    private LocalDateTime stopTime;
+    private LocalTime stopTime;
 
     @ManyToMany
-    private Set<Lesson> lessons;
+    private Set<Lesson> lesson;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private EducationTerm educationTerm;
