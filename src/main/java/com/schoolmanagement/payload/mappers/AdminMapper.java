@@ -1,14 +1,16 @@
-package com.schoolmanagement.utils.mappers;
+package com.schoolmanagement.payload.mappers;
 
 import com.schoolmanagement.entity.concretes.Admin;
 import com.schoolmanagement.payload.request.AdminRequest;
 import com.schoolmanagement.payload.response.AdminResponse;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component //DI icin eklendi
+//@Component //-->Biz IOC container'i bean lerle biz yönetecegiz. CreateObjectBean'e bu classi ekliyoruz
+@Data
 @RequiredArgsConstructor
-public class AdminDto {
+public class AdminMapper {
 
     public Admin createAdminForSave(AdminRequest request) { //DTO --> POJO
 
