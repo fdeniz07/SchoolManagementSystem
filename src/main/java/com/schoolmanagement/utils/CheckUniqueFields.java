@@ -20,7 +20,11 @@ public class CheckUniqueFields {
         String parameter1 = values[0];
         String parameter2 = values[1];
         String parameter3 = values[2];
-        //String parameter4 = values[3]; // eger baska bir unique alan kontrol etmek istersek buraya yaziyoruz
+        String parameter4 = "";
+
+        if (values.length == 4) {
+            parameter4 = values[3];
+        }
 
         if (adminRepository.existsByUsername(parameter1) || deanRepository.existsByUsername(parameter1) ||
                 studentRepository.existsByUsername(parameter1) || teacherRepository.existsByUsername(parameter1) ||
@@ -34,10 +38,8 @@ public class CheckUniqueFields {
                 studentRepository.existsByPhoneNumber(parameter3) || teacherRepository.existsByPhoneNumber(parameter3) ||
                 viceDeanRepository.existsByPhoneNumber(parameter3) || guestUserRepository.existsByPhoneNumber(parameter3)) {
             throw new ConflictException(String.format(Messages.ALREADY_REGISTER_MESSAGE_PHONE_NUMBER, parameter3));
-//        } else if (studentRepository.existsByEmail(parameter4) || teacherRepository.existsByEmail(parameter4)) {
-//            throw new ConflictException(String.format(Messages.ALREADY_REGISTER_MESSAGE_EMAIL, parameter4));
-//        }
-
+        } else if (studentRepository.existsByEmail(parameter4) || teacherRepository.existsByEmail(parameter4)) {
+            throw new ConflictException(String.format(Messages.ALREADY_REGISTER_MESSAGE_EMAIL, parameter4));
         }
 
         /** Vararrgs kullanimi olmadan yazmak istersek

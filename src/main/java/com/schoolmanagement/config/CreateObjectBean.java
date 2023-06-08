@@ -5,6 +5,7 @@ import com.schoolmanagement.payload.mappers.LessonProgramMapper;
 import com.schoolmanagement.payload.dto.ViceDeanDto;
 import com.schoolmanagement.payload.mappers.AdminMapper;
 import com.schoolmanagement.payload.mappers.EducationTermMapper;
+import com.schoolmanagement.payload.mappers.TeacherMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,13 +16,11 @@ public class CreateObjectBean {
 
     @Bean
     public DeanDto deanDTO() {
-
         return new DeanDto();
     }
 
     @Bean
     public ViceDeanDto viceDeanDTO() {
-
         return new ViceDeanDto();
     }
 
@@ -38,6 +37,11 @@ public class CreateObjectBean {
     @Bean
     public LessonProgramMapper lessonProgramRequestDto() {
         return new LessonProgramMapper();
+    }
+
+    @Bean
+    public TeacherMapper teacherRequestDto() {
+        return new TeacherMapper();
     }
 }
 
