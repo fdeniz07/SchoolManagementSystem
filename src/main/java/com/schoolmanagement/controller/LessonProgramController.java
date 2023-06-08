@@ -1,7 +1,5 @@
 package com.schoolmanagement.controller;
 
-import com.schoolmanagement.entity.concretes.EducationTerm;
-import com.schoolmanagement.entity.concretes.Lesson;
 import com.schoolmanagement.payload.request.LessonProgramRequest;
 import com.schoolmanagement.payload.response.LessonProgramResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
@@ -9,6 +7,7 @@ import com.schoolmanagement.service.EducationTermService;
 import com.schoolmanagement.service.LessonProgramService;
 import com.schoolmanagement.service.LessonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,7 +81,29 @@ public class LessonProgramController {
         String username = (String) httpServletRequest.getAttribute("username");
         return lessonProgramService.getLessonProgramByTeacher(username);
     }
+
+    // Not :  getLessonProgramByStudent() *******************************************************************************************************************
+    @GetMapping("/getAllLessonProgramByStudent") //http://localhost:8080/getAllLessonProgramByStudent
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER','TEACHER','STUDENT')")
+    public Set<LessonProgramResponse> getLessonProgramByStudent(HttpServletRequest httpServletRequest) {
+
+        String username = (String) httpServletRequest.getAttribute("username");
+        return lessonProgramService.getLessonProgramByStudent(username);
+    }
+
+    // Not :  getAllWithPage() *******************************************************************************************************************************
+    @GetMapping("/search") //http://localhost:8080/search
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER','TEACHER','STUDENT')")
+    public Page<LessonProgramResponse> search(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "startDate") String sort,
+            @RequestParam(value = "type", defaultValue = "desc") String type
+    ){
+        return lessonProgramService.search(page,size,sort,type);
+    }
 }
+
 
 
 
