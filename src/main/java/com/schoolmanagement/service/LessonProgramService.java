@@ -98,7 +98,6 @@ public class LessonProgramService {
                 .build();
     }
 
-
     // Not :  getById() ********************************************************************************************************************************
     public LessonProgramResponse getByLessonProgramId(Long id) {
 
@@ -126,7 +125,6 @@ public class LessonProgramService {
                 .stream()
                 .map(this::createLessonProgramResponse)
                 .collect(Collectors.toList());
-
     }
 
     // Not :  Delete() *************************************************************************************************************************************
@@ -170,7 +168,6 @@ public class LessonProgramService {
                 .stream()
                 .map(this::createLessonProgramResponseForStudent)
                 .collect(Collectors.toSet());
-
     }
 
     // POJO --DTO dönüsümü
@@ -183,7 +180,6 @@ public class LessonProgramService {
                 .lessonName(lessonProgram.getLesson())
                 //TODO Teacher yazilinca eklenecek
                 .build();
-
     }
 
     // Not :  getAllWithPage() *******************************************************************************************************************************
@@ -193,7 +189,6 @@ public class LessonProgramService {
         if (Objects.equals(type, "desc")) {
             pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         }
-
         return lessonProgramRepository.findAll(pageable)
                 .map(this::createLessonProgramResponse);
     }
