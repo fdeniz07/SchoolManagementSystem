@@ -1,11 +1,6 @@
 package com.schoolmanagement.config;
 
-import com.schoolmanagement.payload.dto.DeanDto;
-import com.schoolmanagement.payload.mappers.LessonProgramMapper;
-import com.schoolmanagement.payload.dto.ViceDeanDto;
-import com.schoolmanagement.payload.mappers.AdminMapper;
-import com.schoolmanagement.payload.mappers.EducationTermMapper;
-import com.schoolmanagement.payload.mappers.TeacherMapper;
+import com.schoolmanagement.payload.mappers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,15 +8,14 @@ import org.springframework.context.annotation.Configuration;
 public class CreateObjectBean {
 
     //Tek class üzerinden Bean'leri kontrol etmemizi sagliyoruz. Diger türlü @Component annotation'u yazmamiz gerekli
-
     @Bean
-    public DeanDto deanDTO() {
-        return new DeanDto();
+    public DeanMapper deanDTO() {
+        return new DeanMapper();
     }
 
     @Bean
-    public ViceDeanDto viceDeanDTO() {
-        return new ViceDeanDto();
+    public ViceDeanMapper viceDeanDTO() {
+        return new ViceDeanMapper();
     }
 
     @Bean
@@ -43,6 +37,9 @@ public class CreateObjectBean {
     public TeacherMapper teacherRequestDto() {
         return new TeacherMapper();
     }
+
+    @Bean
+    public ContactMessageMapper contactMessageMapper(){return new ContactMessageMapper();}
 }
 
 
