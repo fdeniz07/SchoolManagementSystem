@@ -18,10 +18,10 @@ import java.util.Set;
 public class TeacherRequest extends BaseUserRequest {
 
     @NotNull(message = "Please select lesson")
-    private Set<Long> lessonIdList;
+    private Set<Long> lessonsIdList;
 
     @NotNull(message = "Please select isAdvisor Teacher")
-    private Boolean isAdvisorTeacher;
+    private boolean isAdvisorTeacher; //Lombok Boolean türündeki wrapper class larda is... ile baslayan kelimelerin getter'inde sorun yasiyor.
 
     @NotNull(message = "Please enter your email")
     @Email(message = "Please enter valid email")

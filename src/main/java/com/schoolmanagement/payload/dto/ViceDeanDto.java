@@ -6,11 +6,10 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Data
-@Component
+//@Component
 public class ViceDeanDto {
 
     public ViceDean dtoViceBean(ViceDeanRequest viceDeanRequest){
-
         return ViceDean.builder()
                 .birthDay(viceDeanRequest.getBirthDay())
                 .username(viceDeanRequest.getUsername())
