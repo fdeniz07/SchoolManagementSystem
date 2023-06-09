@@ -84,7 +84,7 @@ public class LessonProgramController {
 
     // Not :  getLessonProgramByStudent() *******************************************************************************************************************
     @GetMapping("/getAllLessonProgramByStudent") //http://localhost:8080/getAllLessonProgramByStudent
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER','TEACHER','STUDENT')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER','TEACHER')")
     public Set<LessonProgramResponse> getLessonProgramByStudent(HttpServletRequest httpServletRequest) {
 
         String username = (String) httpServletRequest.getAttribute("username");

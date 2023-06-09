@@ -9,7 +9,7 @@ import lombok.Data;
 public class DeanDto {
 
     //Dto - POJO
-    public Dean dtoDean(DeanRequest deanRequest){ //builder annotation olmadan uzunca asagidaki gibi yazmaz zorunda kaliriz
+    public Dean dtoDean(DeanRequest deanRequest){ //builder annotation olmadan uzunca asagidaki gibi yazmak zorunda kaliriz
         return Dean.builder()
                 .username(deanRequest.getUsername())
                 .name(deanRequest.getName())

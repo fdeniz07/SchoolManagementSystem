@@ -1,6 +1,8 @@
 package com.schoolmanagement.utils;
 
 import com.schoolmanagement.entity.abstracts.User;
+import com.schoolmanagement.entity.concretes.Teacher;
+import com.schoolmanagement.payload.request.TeacherRequest;
 import com.schoolmanagement.payload.request.abstracts.BaseUserRequest;
 
 public class CheckParameterUpdateMethod {
@@ -17,6 +19,20 @@ public class CheckParameterUpdateMethod {
         return user.getSsn().equalsIgnoreCase(baseUserRequest.getSsn())
                 || user.getPhoneNumber().equalsIgnoreCase(baseUserRequest.getPhoneNumber())
                 || user.getUsername().equalsIgnoreCase(baseUserRequest.getUsername());
+    }
 
+//TODO : ileride burasi da düzenlenecek !
+    public static boolean checkParameter(Teacher teacher, TeacherRequest newTeacherRequest) {
+        return teacher.getSsn().equalsIgnoreCase(newTeacherRequest.getSsn())
+                || teacher.getUsername().equalsIgnoreCase(newTeacherRequest.getUsername())
+                || teacher.getPhoneNumber().equalsIgnoreCase(newTeacherRequest.getPhoneNumber())
+                || teacher.getEmail().equalsIgnoreCase(newTeacherRequest.getEmail());
     }
 }
+
+
+
+
+
+
+
