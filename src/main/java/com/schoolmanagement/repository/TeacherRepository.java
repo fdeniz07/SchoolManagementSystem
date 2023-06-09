@@ -3,6 +3,8 @@ package com.schoolmanagement.repository;
 import com.schoolmanagement.entity.concretes.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface TeacherRepository  extends JpaRepository<Teacher,Long> {
 
     boolean existsByUsername(String usernname);
@@ -15,4 +17,5 @@ public interface TeacherRepository  extends JpaRepository<Teacher,Long> {
 
     Teacher findByUsernameEquals(String username);
 
+    List<Teacher> getTeacherByNameContaining(String teacherName);
 }
