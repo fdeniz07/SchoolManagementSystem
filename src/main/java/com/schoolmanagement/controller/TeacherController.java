@@ -6,12 +6,10 @@ import com.schoolmanagement.payload.response.TeacherResponse;
 import com.schoolmanagement.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/teachers")
@@ -28,8 +26,51 @@ public class TeacherController {
         return teacherService.save(request);
     }
 
+    //Not: getAllTeacher() ****************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PostMapping("/getAllTeacher") //http://localhost:8080/teachers/getAllTeacher
+    public List<TeacherResponse> getAllTeacher() {
+
+        return teacherService.getAllTeacher();
+    }
+
+    // Not: updateTeacherById() ************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PutMapping("/update/{userId}")  // http://localhost:8080/teachers/update/1
+    public ResponseMessage<TeacherResponse> updateTeacher(@RequestBody @Valid TeacherRequest teacher, @PathVariable Long userId) {
+
+        return teacherService.updateTeacher(teacher, userId);
+    }
+
+    // Not: getTeacherByName() **************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @GetMapping("/getTeacherByName")
+    public List<TeacherResponse> getTeacherByName(@RequestParam(name = "name") String teacherName){
+        return teacherService.getTeacherByName(teacherName);
+
+    }
+
+    // Not: deleteTeacher() ******************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseMessage<?> deleteTeacher(@PathVariable Long id) {
+        return  teacherService.deleteTeacher(id);
+    }
+
+    // Not: getTeacherById() ******************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @GetMapping("/getSavedTeacherById/{id}")
+    public ResponseMessage<TeacherResponse> getSavedTeacherById(@PathVariable Long id){
+
+        return teacherService.getSavedTeacherById(id);
+    }
+
 
 }
+
+
+
+
 
 
 
