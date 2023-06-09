@@ -1,9 +1,10 @@
 package com.schoolmanagement.service;
 
 import com.schoolmanagement.entity.concretes.Dean;
+import com.schoolmanagement.entity.concretes.UserRole;
 import com.schoolmanagement.entity.enums.RoleType;
 import com.schoolmanagement.exception.ResourceNotFoundException;
-import com.schoolmanagement.payload.dto.DeanDto;
+import com.schoolmanagement.payload.mappers.DeanMapper;
 import com.schoolmanagement.payload.request.DeanRequest;
 import com.schoolmanagement.payload.response.DeanResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 public class DeanService {
 
     private final DeanRepository deanRepository;
-    private final DeanDto deanDto;
+    private final DeanMapper deanMapper;
     private final UserRoleService userRoleService;
     private final PasswordEncoder passwordEncoder;
     private final CheckUniqueFields checkUniqueFields;
@@ -44,7 +45,7 @@ public class DeanService {
                 deanRequest.getPhoneNumber());
 
         //!!! DTO - POJO Dönüsümü --> dto dan gelen bilgileri db ye kaydetmek icin dönüüsm
-        Dean dean = createDtoForDean(deanRequest);
+        Dean dean = deanMapper.createDtoForDean(deanRequest);
 
         //Role ve password bilgileri uygun sekilde setleniyor
         dean.setUserRole(userRoleService.getUserRole(RoleType.MANAGER));
@@ -56,28 +57,7 @@ public class DeanService {
         return ResponseMessage.<DeanResponse>builder() //kaydedilen datayi entity den dto ya cevirip frontend'e gönderiyoruz
                 .message("Dean saved")
                 .httpStatus(HttpStatus.CREATED)
-                .object(createDeanResponse(saveDean)) //yardimci metot
-                .build();
-    }
-
-    private Dean createDtoForDean(DeanRequest deanRequest) { //createDtoToPOJO
-
-        return deanDto.dtoDean(deanRequest); //Injection yaparak (1.Yol - kisa) --> Tüm bean ler bir klasörde toplanmali(config-->CreateObjectBean)
-
-    }
-
-    private DeanResponse createDeanResponse(Dean dean) {
-
-        return DeanResponse.builder()  //injection yapmadan / builder ile (2.Yol - uzun)
-                .userId(dean.getId())
-                .username(dean.getUsername())
-                .name(dean.getName())
-                .surname(dean.getSurname())
-                .birthDay(dean.getBirthDay())
-                .birthPlace(dean.getBirthPlace())
-                .phoneNumber(dean.getPhoneNumber())
-                .gender(dean.getGender())
-                .ssn(dean.getSsn())
+                .object(deanMapper.createDeanResponse(saveDean)) //yardimci metot
                 .build();
     }
 
@@ -98,31 +78,17 @@ public class DeanService {
         }
 
         //!!! Güncellenen yeni bilgiler ile Dean objesinin kaydediyoruz
-        Dean updatedDean = createUpdatedDean(newDean, deanId);
+
+        UserRole userRole = userRoleService.getUserRole(RoleType.MANAGER);
+
+        Dean updatedDean = deanMapper.createUpdatedDean(newDean, deanId, userRole);
         updatedDean.setPassword(passwordEncoder.encode(newDean.getPassword())); //request'den gelen plain text formatindaki password'u encode eder
         deanRepository.save(updatedDean);
 
         return ResponseMessage.<DeanResponse>builder()
                 .message("Dean Updated Successfuly")
                 .httpStatus(HttpStatus.OK)
-                .object(createDeanResponse(updatedDean))
-                .build();
-    }
-
-    //Yardimci method
-    private Dean createUpdatedDean(DeanRequest deanRequest, Long managerId) {
-
-        return Dean.builder()
-                .id(managerId)
-                .username(deanRequest.getUsername())
-                .ssn(deanRequest.getSsn())
-                .name(deanRequest.getName())
-                .surname(deanRequest.getSurname())
-                .birthDay(deanRequest.getBirthDay())
-                .birthPlace(deanRequest.getBirthPlace())
-                .phoneNumber(deanRequest.getPhoneNumber())
-                .gender(deanRequest.getGender())
-                .userRole(userRoleService.getUserRole(RoleType.MANAGER))
+                .object(deanMapper.createDeanResponse(updatedDean))
                 .build();
     }
 
@@ -151,7 +117,6 @@ public class DeanService {
     public ResponseMessage<DeanResponse> getDeanById(Long deanId) {
 
         // ODEV : asagida goz kanatan kod grubu methoid haline cevrilip cagirilacak
-
         checkDeanExists(deanId);  // tekrarlanan kisim icin
 
         /*Optional<Dean> dean = deanRepository.findById(deanId);
@@ -160,39 +125,32 @@ public class DeanService {
 
             throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER2_MESSAGE, deanId));
         }*/
-
         return ResponseMessage.<DeanResponse>builder()
                 .message("Dean Successfully found")
                 .httpStatus(HttpStatus.OK)
-                .object(createDeanResponse(checkDeanExists(deanId).get()))// .object(createDeanResponse(dean.get()))
+                .object(deanMapper.createDeanResponse(checkDeanExists(deanId).get()))// .object(createDeanResponse(dean.get()))
                 .build();
-
     }
 
     //Not: getAll() *********************************************************************************************************************************
     public List<DeanResponse> getAllDean() {
 
         //return List<Dean> deans = deanRepository.findAll();
-
         return deanRepository.findAll()
                 .stream()
-                .map(this::createDeanResponse)
+                .map(deanMapper::createDeanResponse)
                 .collect(Collectors.toList());
     }
 
     //Not: search() *********************************************************************************************************************************
     public Page<DeanResponse> search(int page, int size, String sort, String type) {
-
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
-
         //Eger default degerler geliyorsa yani hicbir deger girilmediyse asagidaki kod calisir
         if (Objects.equals(type, "desc")) {
             pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         }
-
-        return deanRepository.findAll(pageable).map(this::createDeanResponse);
+        return deanRepository.findAll(pageable).map(deanMapper::createDeanResponse);
     }
-
 
     // Not: tekrarlanan kod blogu icin yazilan method
     private Optional<Dean> checkDeanExists(Long deanId) {
@@ -202,7 +160,6 @@ public class DeanService {
         }
         return dean;
     }
-
 }
 
 
