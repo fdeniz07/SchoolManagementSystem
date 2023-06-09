@@ -70,7 +70,6 @@ public class EducationTermService {
                 .stream()
                 .map(educationTermMapper::createEducationTermResponse)
                 .collect(Collectors.toList());
-
     }
 
     // Not :  getAllWithPage() ****************************************************************************************************************************
@@ -80,7 +79,6 @@ public class EducationTermService {
         if (Objects.equals(type, "desc")) {
             pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         }
-
         return educationTermRepository.findAll(pageable).map(educationTermMapper::createEducationTermResponse);
     }
 
@@ -138,9 +136,7 @@ public class EducationTermService {
         checkEducationTermExists(educationTermId);
 
         return educationTermRepository.findByIdEquals(educationTermId);
-
     }
-
 
     //!!! ODEV-1 : ya yoksa kontrolleri method uzerinden cagrilmali
     private void checkEducationTermExists(Long id) {
@@ -148,7 +144,6 @@ public class EducationTermService {
             throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id));
         }
     }
-
 
     // EDUCATION-TERM-SERVICE
 // ODEV-1 : ya yoksa kontrolleri method uzerinden cagrilmali
