@@ -1,16 +1,18 @@
 package com.schoolmanagement.payload.mappers;
 
 import com.schoolmanagement.entity.concretes.Teacher;
+import com.schoolmanagement.entity.concretes.UserRole;
 import com.schoolmanagement.entity.enums.RoleType;
 import com.schoolmanagement.payload.request.TeacherRequest;
 import com.schoolmanagement.payload.response.TeacherResponse;
-import com.schoolmanagement.service.UserRoleService;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class TeacherMapper {
 
-    private final UserRoleService userRoleService;
+    //private final UserRoleService userRoleService; //UserRole enjekte islemini parametreye ceviriyoruz
 
     //DTO --> POJO dönüsümü
     public Teacher dtoTeacher(TeacherRequest teacherRequest) {
@@ -47,7 +49,7 @@ public class TeacherMapper {
     }
 
     //DTO --> POJO dönüsümü
-    public Teacher createUpdatedTeacher(TeacherRequest request, Long id) {
+    public Teacher createUpdatedTeacher(TeacherRequest request, Long id, UserRole userRole) {
         return Teacher.builder()
                 .id(id)
                 .username(request.getUsername())
@@ -59,7 +61,7 @@ public class TeacherMapper {
                 .phoneNumber(request.getPhoneNumber())
                 .gender(request.getGender())
                 .isAdvisor(request.isAdvisorTeacher())
-                .userRole(userRoleService.getUserRole(RoleType.TEACHER))
+                .userRole(userRole)  //.userRole(userRoleService.getUserRole(RoleType.TEACHER)) yazimi parametredeki UserRole birakildi
                 .email(request.getEmail())
                 .build();
     }

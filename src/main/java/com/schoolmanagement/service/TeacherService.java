@@ -2,6 +2,7 @@ package com.schoolmanagement.service;
 
 import com.schoolmanagement.entity.concretes.LessonProgram;
 import com.schoolmanagement.entity.concretes.Teacher;
+import com.schoolmanagement.entity.concretes.UserRole;
 import com.schoolmanagement.entity.enums.RoleType;
 import com.schoolmanagement.exception.BadRequestException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
@@ -105,8 +106,8 @@ public class TeacherService implements Serializable {
                     newTeacher.getPhoneNumber(),
                     newTeacher.getEmail());
         }
-
-        Teacher updatedTeacher = teacherMapper.createUpdatedTeacher(newTeacher, userId);
+        UserRole userRole = userRoleService.getUserRole(RoleType.TEACHER);
+        Teacher updatedTeacher = teacherMapper.createUpdatedTeacher(newTeacher, userId, userRole);
 
         //!!! Password encode ediliyor
         updatedTeacher.setPassword(passwordEncoder.encode(newTeacher.getPassword()));
@@ -161,7 +162,6 @@ public class TeacherService implements Serializable {
                 .message("Teacher Successfully found")
                 .httpStatus(HttpStatus.OK)
                 .build();
-
     }
 
     // Not: getAllWithPage() ******************************************************************************************************************************
