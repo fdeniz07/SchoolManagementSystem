@@ -6,6 +6,7 @@ import com.schoolmanagement.entity.enums.RoleType;
 import com.schoolmanagement.exception.BadRequestException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.mappers.TeacherMapper;
+import com.schoolmanagement.payload.request.ChooseLessonTeacherRequest;
 import com.schoolmanagement.payload.request.TeacherRequest;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.TeacherResponse;
@@ -14,12 +15,17 @@ import com.schoolmanagement.utils.CheckParameterUpdateMethod;
 import com.schoolmanagement.utils.CheckUniqueFields;
 import com.schoolmanagement.utils.Messages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -156,6 +162,48 @@ public class TeacherService implements Serializable {
                 .httpStatus(HttpStatus.OK)
                 .build();
 
+    }
+
+    // Not: getAllWithPage() ******************************************************************************************************************************
+    public Page<TeacherResponse> search(int page, int size, String sort, String type) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
+
+        if (Objects.equals(type, "desc")) {
+            PageRequest.of(page, size, Sort.by(sort).descending());
+        }
+
+        return teacherRepository.findAll(pageable).map(teacherMapper::createTeacherResponse);
+    }
+
+    // Not: addLessonToTeachersLessonsProgram() **********************************************************************************************************
+    public ResponseMessage<TeacherResponse> chooseLesson(ChooseLessonTeacherRequest request) {
+
+        //!!! ya teacher yoksa
+        Teacher teacher = teacherRepository.findById(request.getTeacherId()).orElseThrow(
+                () -> new ResourceNotFoundException(Messages.NOT_FOUND_USER_MESSAGE));
+
+        //!!! LessonProgram getiriliyor
+        Set<LessonProgram> lessonPrograms = lessonProgramService.getLessonProgramById(request.getLessonProgramId());
+
+        //!!! Gelen LessonProgram ici bos mu kontrolü
+        if (lessonPrograms.size() == 0) {
+            throw new ResourceNotFoundException(Messages.LESSON_PROGRAM_NOT_FOUND_MESSAGE);
+        }
+
+        //!!! Teacher'in mevcut ders programini getir
+        Set<LessonProgram> existLessonProgram = teacher.getLessonsProgramList();
+
+        //TODO eklenecek olan LessonProgram mwvcuttaki LessonProgram'Da var mi kontrolü
+        existLessonProgram.addAll(lessonPrograms);
+        teacher.setLessonsProgramList(existLessonProgram);
+        Teacher savedTeacher = teacherRepository.save(teacher);
+
+        return ResponseMessage.<TeacherResponse>builder()
+                .message("LessonProgram added to Teacher")
+                .httpStatus(HttpStatus.CREATED)
+                .object(teacherMapper.createTeacherResponse(savedTeacher))
+                .build();
     }
 }
 

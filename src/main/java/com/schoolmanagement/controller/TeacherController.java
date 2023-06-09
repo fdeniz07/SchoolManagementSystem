@@ -1,10 +1,12 @@
 package com.schoolmanagement.controller;
 
+import com.schoolmanagement.payload.request.ChooseLessonTeacherRequest;
 import com.schoolmanagement.payload.request.TeacherRequest;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.TeacherResponse;
 import com.schoolmanagement.service.TeacherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,6 +67,25 @@ public class TeacherController {
         return teacherService.getSavedTeacherById(id);
     }
 
+    // Not: getAllWithPage() ******************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @GetMapping("/getSavedTeacherById/{id}")
+    public Page<TeacherResponse> search(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "startDate") String sort,
+            @RequestParam(value = "type", defaultValue = "desc") String type
+    ){
+        return teacherService.search(page,size,sort,type);
+    }
+
+    // Not: addLessonToTeachersLessonsProgram() **********************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PostMapping("/getSavedTeacherById/{id}")
+    public ResponseMessage<TeacherResponse> chooseLesson(@RequestBody @Valid ChooseLessonTeacherRequest request){
+
+        return teacherService.chooseLesson(request);
+    }
 
 }
 
