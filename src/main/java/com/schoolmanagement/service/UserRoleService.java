@@ -20,7 +20,6 @@ public class UserRoleService {
 
         Optional<UserRole> userRole = userRoleRepository.findByERoleEquals(roleType); //Optional yazmamizin nedeni NullPointerException dan kacinmak
         return userRole.orElse(null);
-
     }
 
     //Runner tarafi icin gerekli method
@@ -34,11 +33,9 @@ public class UserRoleService {
         if (userRoleRepository.existsByERoleEquals(roleType)) { //role varsa
 
             throw new ConflictException("This role is already registered!");
-
         }
 
         UserRole userRole = UserRole.builder().roleType(roleType).build();
         return userRoleRepository.save(userRole);
-
     }
 }
