@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
@@ -27,10 +26,15 @@ public class LessonProgramResponse implements Serializable {
     private LocalTime stopTime;
     private Set<Lesson> lessonName;
     private EducationTerm educationTerm;
-
-// TODO STUDENT VE TEACHER YAZILINCA EKLEMELER YAPILACAK
-
+    // TODO STUDENT VE TEACHER YAZILINCA EKLEMELER YAPILACAK
+    private Set<TeacherResponse> teachers;
 }
+
+
+
+
+
+
 
 
 

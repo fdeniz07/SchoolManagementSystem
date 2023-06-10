@@ -60,7 +60,7 @@ public class LessonProgramService {
         return ResponseMessage.<LessonProgramResponse>builder()
                 .message("Lesson Program is Created")
                 .httpStatus(HttpStatus.CREATED)
-                .object(createLessonProgramResponseForSaveMethod(savedLessonProgram))
+                .object(lessonProgramMapper.createLessonProgramResponseForSaveMethod(savedLessonProgram))
                 .build();
     }
 
@@ -68,34 +68,13 @@ public class LessonProgramService {
         return lessonProgramMapper.dtoLessonProgram(lessonProgramRequest, lessons);
     }
 
-    private LessonProgramResponse createLessonProgramResponseForSaveMethod(LessonProgram lessonProgram) {
-        return LessonProgramResponse.builder()
-                .day(lessonProgram.getDay())
-                .startTime(lessonProgram.getStartTime())
-                .stopTime(lessonProgram.getStopTime())
-                .lessonProgramId(lessonProgram.getId())
-                .lessonName(lessonProgram.getLesson())
-                .build();
-    }
-
     // NOT : getAll() *********************************************************************************************************************************
     public List<LessonProgramResponse> getAllLessonProgram() {
 
         return lessonProgramRepository.findAll()
                 .stream()
-                .map(this::createLessonProgramResponse)
+                .map(lessonProgramMapper::createLessonProgramResponse,)
                 .collect(Collectors.toList());
-    }
-
-    public LessonProgramResponse createLessonProgramResponse(LessonProgram lessonProgram) {
-        return LessonProgramResponse.builder()
-                .day(lessonProgram.getDay())
-                .startTime(lessonProgram.getStartTime())
-                .stopTime(lessonProgram.getStopTime())
-                .lessonProgramId(lessonProgram.getId())
-                .lessonName(lessonProgram.getLesson())
-                //TODO Teacher ve Student yazilinca buraya ekleme yapilacak
-                .build();
     }
 
     // Not :  getById() ********************************************************************************************************************************
@@ -106,7 +85,7 @@ public class LessonProgramService {
         });
 
         // return lessonProgramRepository.findById(id).map(this::createLessonProgramResponse).get();
-        return createLessonProgramResponse(lessonProgram);
+        return lessonProgramMapper.createLessonProgramResponse(lessonProgram);
     }
 
     // Not :  getAllLessonProgramUnassigned() ************************************************************************************************************
@@ -114,7 +93,7 @@ public class LessonProgramService {
 
         return lessonProgramRepository.findByTeachers_IdNull()
                 .stream()
-                .map(this::createLessonProgramResponse)
+                .map(lessonProgramMapper::createLessonProgramResponse)
                 .collect(Collectors.toList());
     }
 
@@ -123,7 +102,7 @@ public class LessonProgramService {
 
         return lessonProgramRepository.findByTeachers_IdNotNull()
                 .stream()
-                .map(this::createLessonProgramResponse)
+                .map(lessonProgramMapper::createLessonProgramResponse)
                 .collect(Collectors.toList());
     }
 
@@ -147,39 +126,16 @@ public class LessonProgramService {
     public Set<LessonProgramResponse> getLessonProgramByTeacher(String username) {
         return lessonProgramRepository.getLessonProgramByTeacherUsername(username)
                 .stream()
-                .map(this::createLessonProgramResponseForTeacher)
+                .map(lessonProgramMapper::createLessonProgramResponseForTeacher)
                 .collect(Collectors.toSet());
-    }
-
-    public LessonProgramResponse createLessonProgramResponseForTeacher(LessonProgram lessonProgram) {
-        return LessonProgramResponse.builder()
-                .day(lessonProgram.getDay())
-                .startTime(lessonProgram.getStartTime())
-                .stopTime(lessonProgram.getStopTime())
-                .lessonProgramId(lessonProgram.getId())
-                .lessonName(lessonProgram.getLesson())
-                //TODO Student yazilinca buraya ekleme yapilacak
-                .build();
     }
 
     // Not :  getLessonProgramByStudent() *******************************************************************************************************************
     public Set<LessonProgramResponse> getLessonProgramByStudent(String username) {
         return lessonProgramRepository.getLessonProgramByStudentUsername(username)
                 .stream()
-                .map(this::createLessonProgramResponseForStudent)
+                .map(lessonProgramMapper::createLessonProgramResponseForStudent)
                 .collect(Collectors.toSet());
-    }
-
-    // POJO --DTO dönüsümü
-    public LessonProgramResponse createLessonProgramResponseForStudent(LessonProgram lessonProgram) {
-        return LessonProgramResponse.builder()
-                .day(lessonProgram.getDay())
-                .startTime(lessonProgram.getStartTime())
-                .stopTime(lessonProgram.getStopTime())
-                .lessonProgramId(lessonProgram.getId())
-                .lessonName(lessonProgram.getLesson())
-                //TODO Teacher yazilinca eklenecek
-                .build();
     }
 
     // Not :  getAllWithPage() *******************************************************************************************************************************
@@ -190,7 +146,7 @@ public class LessonProgramService {
             pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         }
         return lessonProgramRepository.findAll(pageable)
-                .map(this::createLessonProgramResponse);
+                .map(lessonProgramMapper::createLessonProgramResponse);
     }
 
     // Not :  getLessonProgramById() ***************************************************************************************************************************
