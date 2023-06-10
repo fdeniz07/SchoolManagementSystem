@@ -13,6 +13,7 @@ import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.TeacherResponse;
 import com.schoolmanagement.repository.TeacherRepository;
 import com.schoolmanagement.utils.CheckParameterUpdateMethod;
+import com.schoolmanagement.utils.CheckSameLessonProgram;
 import com.schoolmanagement.utils.CheckUniqueFields;
 import com.schoolmanagement.utils.Messages;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class TeacherService implements Serializable {
     private final PasswordEncoder passwordEncoder;
     private final TeacherMapper teacherMapper;
     private final UserRoleService userRoleService;
+    private final AdvisorTeacherService advisorTeacherService;
 
     //Not: save() *************************************************************************************************************************************
     public ResponseMessage<TeacherResponse> save(TeacherRequest request) {
@@ -70,6 +72,9 @@ public class TeacherService implements Serializable {
         Teacher savedTeacher = teacherRepository.save(teacher);
 
         //TODO AdvisorTeacher yazilinca ekleme yapilacak
+        if (request.isAdvisorTeacher()){
+            advisorTeacherService.saveAdvisorTeacher(savedTeacher); // AdvisorTeacherService gidilip bu metod orada yazilacak
+        }
 
         return ResponseMessage.<TeacherResponse>builder()
                 .message("Teacher saved successfully")
@@ -117,6 +122,7 @@ public class TeacherService implements Serializable {
         Teacher savedTeacher = teacherRepository.save(updatedTeacher);
 
         //TODO: AdvisorTeacher eklenince yazilacak
+        advisorTeacherService.updateAdvisorTeacher(newTeacher.isAdvisorTeacher(),savedTeacher);
 
         return ResponseMessage.<TeacherResponse>builder()
                 .object(teacherMapper.createTeacherResponse(savedTeacher))
@@ -194,7 +200,9 @@ public class TeacherService implements Serializable {
         //!!! Teacher'in mevcut ders programini getir
         Set<LessonProgram> existLessonProgram = teacher.getLessonsProgramList();
 
-        //TODO eklenecek olan LessonProgram mwvcuttaki LessonProgram'Da var mi kontrolü
+        //TODO eklenecek olan LessonProgram mevcuttaki LessonProgram'da var mi kontrolü
+        CheckSameLessonProgram.checkLessonPrograms(existLessonProgram,lessonPrograms);
+
         existLessonProgram.addAll(lessonPrograms);
         teacher.setLessonsProgramList(existLessonProgram);
         Teacher savedTeacher = teacherRepository.save(teacher);
