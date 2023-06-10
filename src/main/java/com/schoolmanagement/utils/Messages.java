@@ -8,7 +8,6 @@ public class Messages {
     public static final String ALREADY_REGISTER_MESSAGE_PHONE_NUMBER = "Error : User with phone number %s already register";
     public static final String ALREADY_REGISTER_MESSAGE_EMAIL= "Error : User with email %s already register";
 
-
     public static final String NOT_PERMITTED_METHOD_MESSAGE = "You don't have any permission to change this value";
 
     public static final String NOT_FOUND_USER_MESSAGE = "Error : User not found";
@@ -26,6 +25,9 @@ public class Messages {
     public static final String TIME_NOT_VALID_MESSAGE = "Error: incorrect time" ;
 
     public static final String LESSON_PROGRAM_NOT_FOUND_MESSAGE = "Error: Lesson Program not found" ;
+
+    public static final String LESSON_PROGRAM_EXIST_MESSAGE = "Error: Course schedule can not be selected for the same hour and date" ;
+
 }
 
 
