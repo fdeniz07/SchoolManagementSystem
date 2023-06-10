@@ -40,6 +40,9 @@ public class CreateObjectBean {
 
     @Bean
     public ContactMessageMapper contactMessageMapper(){return new ContactMessageMapper();}
+
+    @Bean
+    public AdvisorTeacherMapper advisorTeacherMapper(){return new AdvisorTeacherMapper();}
 }
 
 
