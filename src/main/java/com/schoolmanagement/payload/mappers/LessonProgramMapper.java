@@ -6,10 +6,12 @@ import com.schoolmanagement.payload.request.LessonProgramRequest;
 import com.schoolmanagement.payload.response.LessonProgramResponse;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+//@Component
 @Data
 @RequiredArgsConstructor
 public class LessonProgramMapper {
