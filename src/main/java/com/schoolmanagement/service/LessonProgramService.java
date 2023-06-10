@@ -73,7 +73,7 @@ public class LessonProgramService {
 
         return lessonProgramRepository.findAll()
                 .stream()
-                .map(lessonProgramMapper::createLessonProgramResponse,)
+                .map(lessonProgramMapper::createLessonProgramResponse)
                 .collect(Collectors.toList());
     }
 
