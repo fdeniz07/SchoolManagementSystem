@@ -2,7 +2,6 @@ package com.schoolmanagement.payload.mappers;
 
 import com.schoolmanagement.entity.concretes.Teacher;
 import com.schoolmanagement.entity.concretes.UserRole;
-import com.schoolmanagement.entity.enums.RoleType;
 import com.schoolmanagement.payload.request.TeacherRequest;
 import com.schoolmanagement.payload.response.TeacherResponse;
 import lombok.Data;
@@ -33,7 +32,7 @@ public class TeacherMapper {
     }
 
     //POJO-->DTO dönüsümü
-    public TeacherResponse createTeacherResponse(Teacher teacher) {
+    public  TeacherResponse createTeacherResponse(Teacher teacher) {
         return TeacherResponse.builder()
                 .userId(teacher.getId())
                 .username(teacher.getUsername())

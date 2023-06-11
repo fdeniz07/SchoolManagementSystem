@@ -43,6 +43,7 @@ public class CreateObjectBean {
 
     @Bean
     public AdvisorTeacherMapper advisorTeacherMapper(){return new AdvisorTeacherMapper();}
+
 }
 
 
