@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LessonProgramMapper {
 
-   //private final TeacherMapper teacherMapper;
-   TeacherMapper teacherMapper = new TeacherMapper();
+   private final TeacherMapper teacherMapper;
+   //TeacherMapper teacherMapper = new TeacherMapper();
 
     //DTO --> POJO dönüsümü
 

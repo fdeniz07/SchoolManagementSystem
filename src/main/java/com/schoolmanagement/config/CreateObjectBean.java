@@ -9,12 +9,12 @@ public class CreateObjectBean {
 
     //Tek class üzerinden Bean'leri kontrol etmemizi sagliyoruz. Diger türlü @Component annotation'u yazmamiz gerekli
     @Bean
-    public DeanMapper deanDTO() {
+    public DeanMapper deanMapper() {
         return new DeanMapper();
     }
 
     @Bean
-    public ViceDeanMapper viceDeanDTO() {
+    public ViceDeanMapper viceDeanMapper() {
         return new ViceDeanMapper();
     }
 
@@ -29,12 +29,12 @@ public class CreateObjectBean {
     }
 
     @Bean
-    public LessonProgramMapper lessonProgramRequestDto() {
+    public LessonProgramMapper lessonProgramMapper() {
         return new LessonProgramMapper();
     }
 
     @Bean
-    public TeacherMapper teacherRequestDto() {
+    public TeacherMapper teacherMapper() {
         return new TeacherMapper();
     }
 
