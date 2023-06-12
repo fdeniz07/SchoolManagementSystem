@@ -76,9 +76,10 @@ public class AdvisorTeacherService implements Serializable {
         advisorTeacherRepository.save(advisorTeacherBuilder);
     }
 
-        //Not: updateAdvisorTeacher() ********************************************************************************************************************************
+         //Not: updateAdvisorTeacher() ********************************************************************************************************************************
     public void updateAdvisorTeacher(boolean status, Teacher teacher) {
 
+        // !!! teacherId ile iliskilendirilmis AdvisorTeacher nesnesini DB den bulup getiriyoruz
         Optional<AdvisorTeacher> advisorTeacher = advisorTeacherRepository.getAdvisorTeacherByTeacher_Id(teacher.getId());
 
         AdvisorTeacher.AdvisorTeacherBuilder advisorTeacherBuilder = AdvisorTeacher.builder()
@@ -86,19 +87,39 @@ public class AdvisorTeacherService implements Serializable {
                 .userRole(userRoleService.getUserRole(RoleType.ADVISORTEACHER));
 
         //AdvisorTeacher'in ici dolu mu
-        if (advisorTeacher.isPresent()){
+        if (advisorTeacher.isPresent()) {
             //isAdvisorTeacher dan gelen status kontrolü
-            if (status){ //true ise kaydet
+            if (status) { //true ise kaydet
                 advisorTeacherBuilder.id(advisorTeacher.get().getId());
                 advisorTeacherRepository.save(advisorTeacherBuilder.build());
-            }else{ //false ise AdvisorTeacher tablosundan ilgili kaydi siliyoruz
+            } else { //false ise AdvisorTeacher tablosundan ilgili kaydi siliyoruz
                 advisorTeacherRepository.deleteById(advisorTeacher.get().getId());
             }
-        } else { //if lerin üstündeki islemin tamamlanabilmesi icin asagida build islemini tamamliyoruz
-            advisorTeacherRepository.save(advisorTeacherBuilder.build());
         }
+//        else { //if lerin üstündeki islemin tamamlanabilmesi icin asagida build islemini tamamliyoruz
+//            advisorTeacherRepository.save(advisorTeacherBuilder.build()); //TODO: buraya bakilacak
+//        }
+    }
+
+    //NOT : StudentService icin gerekli metod ***************************************************************************************************
+    public Optional<AdvisorTeacher> getAdvisorTeacherGetById(Long id) {
+        return advisorTeacherRepository.findById(id);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

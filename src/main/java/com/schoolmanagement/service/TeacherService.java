@@ -92,6 +92,7 @@ public class TeacherService implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    //Not: updateTeacher() ****************************************************************************************************************************
     public ResponseMessage<TeacherResponse> updateTeacher(TeacherRequest newTeacher, Long userId) {
 
         //!!! Id üzerinden teacher nesnesi getiriliyor
@@ -121,7 +122,7 @@ public class TeacherService implements Serializable {
         updatedTeacher.setLessonsProgramList(lessons); //TODO buraya bakilacak
         Teacher savedTeacher = teacherRepository.save(updatedTeacher);
 
-        //TODO: AdvisorTeacher eklenince yazilacak
+        //!!! AdvisorTeacher eklenince yazildi
         advisorTeacherService.updateAdvisorTeacher(newTeacher.isAdvisorTeacher(),savedTeacher);
 
         return ResponseMessage.<TeacherResponse>builder()

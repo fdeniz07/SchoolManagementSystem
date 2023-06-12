@@ -6,6 +6,7 @@ import com.schoolmanagement.entity.concretes.LessonProgram;
 import com.schoolmanagement.exception.BadRequestException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.mappers.LessonProgramMapper;
+import com.schoolmanagement.payload.mappers.TeacherMapper;
 import com.schoolmanagement.payload.request.LessonProgramRequest;
 import com.schoolmanagement.payload.response.LessonProgramResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;

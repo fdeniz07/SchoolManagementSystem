@@ -44,6 +44,8 @@ public class CreateObjectBean {
     @Bean
     public AdvisorTeacherMapper advisorTeacherMapper(){return new AdvisorTeacherMapper();}
 
+    @Bean
+    public StudentMapper studentMapper(){return new StudentMapper();}
 }
 
 
