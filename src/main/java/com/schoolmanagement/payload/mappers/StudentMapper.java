@@ -31,25 +31,6 @@ public class StudentMapper {
                 .build();
     }
 
-    //!!! POJO - DTO dönüsümü
-    public StudentResponse createStudentResponse(Student student){
-        return StudentResponse.builder()
-                .userId(student.getId())
-                .username(student.getUsername())
-                .name(student.getName())
-                .surname(student.getSurname())
-                .birthDay(student.getBirthDay())
-                .birthPlace(student.getBirthPlace())
-                .gender(student.getGender())
-                .phoneNumber(student.getPhoneNumber())
-                .ssn(student.getSsn())
-                .email(student.getEmail())
-                .fatherName(student.getFatherName())
-                .motherName(student.getMotherName())
-                .isActive(student.isActive())
-                .build();
-    }
-
     //!!! DTO --> POJO dönüsümü
     public Student createUpdatedStudent(StudentRequest studentRequest, Long userId, UserRole userRole, AdvisorTeacher advisorTeacher){
         return Student.builder()
