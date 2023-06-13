@@ -69,7 +69,7 @@ public class TeacherController {
 
     // Not: getAllWithPage() ******************************************************************************************************************************
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
-    @GetMapping("/getSavedTeacherById/{id}")
+    @GetMapping("/search")
     public Page<TeacherResponse> search(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -81,7 +81,7 @@ public class TeacherController {
 
     // Not: addLessonToTeachersLessonsProgram() **********************************************************************************************************
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
-    @PostMapping("/getSavedTeacherById/{id}")
+    @PostMapping("/chooseLesson")
     public ResponseMessage<TeacherResponse> chooseLesson(@RequestBody @Valid ChooseLessonTeacherRequest request){
 
         return teacherService.chooseLesson(request);
