@@ -26,8 +26,9 @@ public class LessonProgramResponse implements Serializable {
     private LocalTime stopTime;
     private Set<Lesson> lessonName;
     private EducationTerm educationTerm;
-    // TODO STUDENT VE TEACHER YAZILINCA EKLEMELER YAPILACAK
+    //STUDENT VE TEACHER YAZILINCA EKLENDI
     private Set<TeacherResponse> teachers;
+    private Set<StudentResponse> students;
 }
 
 

@@ -6,7 +6,7 @@ import com.schoolmanagement.entity.concretes.LessonProgram;
 import com.schoolmanagement.exception.BadRequestException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.mappers.LessonProgramMapper;
-import com.schoolmanagement.payload.mappers.TeacherMapper;
+import com.schoolmanagement.payload.mappers.LessonProgramTeacherStudentMapper;
 import com.schoolmanagement.payload.request.LessonProgramRequest;
 import com.schoolmanagement.payload.response.LessonProgramResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
@@ -34,6 +34,7 @@ public class LessonProgramService {
     private final LessonService lessonService;
     private final EducationTermService educationTermService;
     private final LessonProgramMapper lessonProgramMapper;
+    private final LessonProgramTeacherStudentMapper lessonProgramTeacherStudentMapper;
 
     //Not: save() **************************************************************************************************************************************
     public ResponseMessage<LessonProgramResponse> save(LessonProgramRequest request) {
@@ -74,7 +75,7 @@ public class LessonProgramService {
 
         return lessonProgramRepository.findAll()
                 .stream()
-                .map(lessonProgramMapper::createLessonProgramResponse)
+                .map(lessonProgramTeacherStudentMapper::createLessonProgramResponse)
                 .collect(Collectors.toList());
     }
 
@@ -86,7 +87,7 @@ public class LessonProgramService {
         });
 
         // return lessonProgramRepository.findById(id).map(this::createLessonProgramResponse).get();
-        return lessonProgramMapper.createLessonProgramResponse(lessonProgram);
+        return lessonProgramTeacherStudentMapper.createLessonProgramResponse(lessonProgram);
     }
 
     // Not :  getAllLessonProgramUnassigned() ************************************************************************************************************
@@ -94,7 +95,7 @@ public class LessonProgramService {
 
         return lessonProgramRepository.findByTeachers_IdNull()
                 .stream()
-                .map(lessonProgramMapper::createLessonProgramResponse)
+                .map(lessonProgramTeacherStudentMapper::createLessonProgramResponse)
                 .collect(Collectors.toList());
     }
 
@@ -103,7 +104,7 @@ public class LessonProgramService {
 
         return lessonProgramRepository.findByTeachers_IdNotNull()
                 .stream()
-                .map(lessonProgramMapper::createLessonProgramResponse)
+                .map(lessonProgramTeacherStudentMapper::createLessonProgramResponse)
                 .collect(Collectors.toList());
     }
 
@@ -127,7 +128,7 @@ public class LessonProgramService {
     public Set<LessonProgramResponse> getLessonProgramByTeacher(String username) {
         return lessonProgramRepository.getLessonProgramByTeacherUsername(username)
                 .stream()
-                .map(lessonProgramMapper::createLessonProgramResponseForTeacher)
+                .map(lessonProgramTeacherStudentMapper::createLessonProgramResponseForTeacher)
                 .collect(Collectors.toSet());
     }
 
@@ -135,7 +136,7 @@ public class LessonProgramService {
     public Set<LessonProgramResponse> getLessonProgramByStudent(String username) {
         return lessonProgramRepository.getLessonProgramByStudentUsername(username)
                 .stream()
-                .map(lessonProgramMapper::createLessonProgramResponseForStudent)
+                .map(lessonProgramTeacherStudentMapper::createLessonProgramResponseForStudent)
                 .collect(Collectors.toSet());
     }
 
@@ -147,7 +148,7 @@ public class LessonProgramService {
             pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         }
         return lessonProgramRepository.findAll(pageable)
-                .map(lessonProgramMapper::createLessonProgramResponse);
+                .map(lessonProgramTeacherStudentMapper::createLessonProgramResponse);
     }
 
     // Not :  getLessonProgramById() ***************************************************************************************************************************

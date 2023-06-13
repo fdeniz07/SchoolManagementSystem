@@ -18,7 +18,7 @@ public interface LessonProgramRepository extends JpaRepository<LessonProgram,Lon
     Set<LessonProgram> getLessonProgramByTeacherUsername(String username);
 
 
-    @Query("SELECT l FROM LessonProgram l INNER JOIN l.student students WHERE students.username =?1" )// LessonProgramdaki studentId yi alip, Student tablosuna gidip,
+    @Query("SELECT l FROM LessonProgram l INNER JOIN l.students students WHERE students.username =?1" )// LessonProgramdaki studentId yi alip, Student tablosuna gidip,
                                                                                                      // ilgili studentId ye ait username'i aliyoruz
     Set<LessonProgram> getLessonProgramByStudentUsername(String username);
 
