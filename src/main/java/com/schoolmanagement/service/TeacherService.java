@@ -72,7 +72,7 @@ public class TeacherService implements Serializable {
         Teacher savedTeacher = teacherRepository.save(teacher);
 
         //TODO AdvisorTeacher yazilinca ekleme yapilacak
-        if (request.isAdvisorTeacher()){
+        if (request.isAdvisorTeacher()) {
             advisorTeacherService.saveAdvisorTeacher(savedTeacher); // AdvisorTeacherService gidilip bu metod orada yazilacak
         }
 
@@ -123,7 +123,7 @@ public class TeacherService implements Serializable {
         Teacher savedTeacher = teacherRepository.save(updatedTeacher);
 
         //!!! AdvisorTeacher eklenince yazildi
-        advisorTeacherService.updateAdvisorTeacher(newTeacher.isAdvisorTeacher(),savedTeacher);
+        advisorTeacherService.updateAdvisorTeacher(newTeacher.isAdvisorTeacher(), savedTeacher);
 
         return ResponseMessage.<TeacherResponse>builder()
                 .object(teacherMapper.createTeacherResponse(savedTeacher))
@@ -202,7 +202,7 @@ public class TeacherService implements Serializable {
         Set<LessonProgram> existLessonProgram = teacher.getLessonsProgramList();
 
         //TODO eklenecek olan LessonProgram mevcuttaki LessonProgram'da var mi kontrolü
-        CheckSameLessonProgram.checkLessonPrograms(existLessonProgram,lessonPrograms);
+        CheckSameLessonProgram.checkLessonPrograms(existLessonProgram, lessonPrograms);
 
         existLessonProgram.addAll(lessonPrograms);
         teacher.setLessonsProgramList(existLessonProgram);
@@ -213,6 +213,15 @@ public class TeacherService implements Serializable {
                 .httpStatus(HttpStatus.CREATED)
                 .object(teacherMapper.createTeacherResponse(savedTeacher))
                 .build();
+    }
+
+    //!!! StudentInfoService icin eklendi
+    public Teacher getTeacherByUsername(String username) {
+
+        if (!teacherRepository.existsByUsername(username)) { //--> ya da return findByUsername(username).orElseThrow....yazilabilirdi
+            throw new ResourceNotFoundException(Messages.NOT_FOUND_USER_MESSAGE);
+        }
+        return teacherRepository.getTeacherByUsername(username);
     }
 }
 
