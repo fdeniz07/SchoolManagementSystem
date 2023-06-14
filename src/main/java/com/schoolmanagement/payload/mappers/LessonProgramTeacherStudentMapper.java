@@ -26,7 +26,7 @@ public class LessonProgramTeacherStudentMapper {
                 .lessonName(lessonProgram.getLesson())
                 //!!! Teacher yazilinca eklendi
                 .teachers(lessonProgram.getTeachers().stream().map(this::createTeacherResponse).collect(Collectors.toSet()))
-                //TODO Student yazilinca buraya ekleme yapilacak
+                //!!! Student yazilinca eklendi
                 .students(lessonProgram.getStudents()
                         .stream()
                         .map(this::createStudentResponse)
@@ -71,7 +71,7 @@ public class LessonProgramTeacherStudentMapper {
                 .stopTime(lessonProgram.getStopTime())
                 .lessonProgramId(lessonProgram.getId())
                 .lessonName(lessonProgram.getLesson())
-                //TODO Student yazilinca buraya ekleme yapilacak
+                //!!! Student yazilinca eklendi
                 .students(lessonProgram.getStudents()
                         .stream()
                         .map(this::createStudentResponse)
