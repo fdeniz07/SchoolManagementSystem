@@ -19,12 +19,12 @@ public class CreateObjectBean {
     }
 
     @Bean
-    public AdminMapper adminMapper(){
+    public AdminMapper adminMapper() {
         return new AdminMapper();
     }
 
     @Bean
-    public EducationTermMapper educationTermMapper(){
+    public EducationTermMapper educationTermMapper() {
         return new EducationTermMapper();
     }
 
@@ -39,16 +39,29 @@ public class CreateObjectBean {
     }
 
     @Bean
-    public ContactMessageMapper contactMessageMapper(){return new ContactMessageMapper();}
+    public ContactMessageMapper contactMessageMapper() {
+        return new ContactMessageMapper();
+    }
 
     @Bean
-    public AdvisorTeacherMapper advisorTeacherMapper(){return new AdvisorTeacherMapper();}
+    public AdvisorTeacherMapper advisorTeacherMapper() {
+        return new AdvisorTeacherMapper();
+    }
 
     @Bean
-    public StudentMapper studentMapper(){return new StudentMapper();}
+    public StudentMapper studentMapper() {
+        return new StudentMapper();
+    }
 
     @Bean
-    public LessonProgramTeacherStudentMapper lessonProgramTeacherStudentMapper(){return new LessonProgramTeacherStudentMapper();}
+    public LessonProgramTeacherStudentMapper lessonProgramTeacherStudentMapper() {
+        return new LessonProgramTeacherStudentMapper();
+    }
+
+    @Bean
+    public StudentInfoMapper studentInfoMapper() {
+        return new StudentInfoMapper();
+    }
 }
 
 
