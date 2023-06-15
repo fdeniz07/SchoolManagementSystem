@@ -1,11 +1,16 @@
 package com.schoolmanagement.payload.mappers;
 
+import com.schoolmanagement.entity.concretes.EducationTerm;
+import com.schoolmanagement.entity.concretes.Lesson;
 import com.schoolmanagement.entity.concretes.Student;
 import com.schoolmanagement.entity.concretes.StudentInfo;
 import com.schoolmanagement.entity.enums.Note;
+import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.request.StudentInfoRequestWithoutTeacherId;
+import com.schoolmanagement.payload.request.UpdateStudentInfoRequest;
 import com.schoolmanagement.payload.response.StudentInfoResponse;
 import com.schoolmanagement.payload.response.StudentResponse;
+import com.schoolmanagement.utils.Messages;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -25,8 +30,8 @@ public class StudentInfoMapper {
                 .build();
     }
 
-    public StudentInfoResponse createResponse(StudentInfo studentInfo){
-        return  StudentInfoResponse.builder()
+    public StudentInfoResponse createResponse(StudentInfo studentInfo) {
+        return StudentInfoResponse.builder()
                 .lessonName(studentInfo.getLesson().getLessonName())
                 .creditScore(studentInfo.getLesson().getCreditScore())
                 .isCompulsory(studentInfo.getLesson().getIsCompulsory())
@@ -41,7 +46,7 @@ public class StudentInfoMapper {
                 .build();
     }
 
-    public StudentResponse createStudentResponse(Student student){
+    public StudentResponse createStudentResponse(Student student) {
         return StudentResponse.builder()
                 .userId(student.getId())
                 .username(student.getUsername())
@@ -58,7 +63,31 @@ public class StudentInfoMapper {
                 .isActive(student.isActive())
                 .build();
     }
+
+    public StudentInfo createUpdatedStudent(UpdateStudentInfoRequest studentInfoRequest,
+                                            Long studentInfoRequestId,
+                                            Lesson lesson,
+                                            EducationTerm educationTerm,
+                                            Note note,
+                                            Double average) {
+        return StudentInfo.builder()
+                .id(studentInfoRequestId)
+                .infoNote(studentInfoRequest.getInfoNote())
+                .midtermExam(studentInfoRequest.getMidtermExam())
+                .finalExam(studentInfoRequest.getFinalExam())
+                .absentee(studentInfoRequest.getAbsentee())
+                .lesson(lesson)
+                .educationTerm(educationTerm)
+                .examAverage(average)
+                .letterGrade(note)
+                .build();
+    }
 }
+
+
+
+
+
 
 
 
