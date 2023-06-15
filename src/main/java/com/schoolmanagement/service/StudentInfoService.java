@@ -6,16 +6,22 @@ import com.schoolmanagement.exception.ConflictException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.mappers.StudentInfoMapper;
 import com.schoolmanagement.payload.request.StudentInfoRequestWithoutTeacherId;
+import com.schoolmanagement.payload.request.UpdateStudentInfoRequest;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.StudentInfoResponse;
+import com.schoolmanagement.payload.response.StudentResponse;
 import com.schoolmanagement.repository.StudentInfoRepository;
 import com.schoolmanagement.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -109,7 +115,7 @@ public class StudentInfoService implements Serializable {
     // Not: delete()*****************************************************************************************************************************
     public ResponseMessage<?> deleteStudentInfo(Long studentInfoId) {
 
-        if(!studentInfoRepository.existsByIdEquals(studentInfoId)) {
+        if (!studentInfoRepository.existsByIdEquals(studentInfoId)) {
             throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND, studentInfoId));
         }
         studentInfoRepository.deleteById(studentInfoId);
@@ -119,7 +125,109 @@ public class StudentInfoService implements Serializable {
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
+
+    // Not: update()*****************************************************************************************************************************
+    public ResponseMessage<StudentInfoResponse> update(UpdateStudentInfoRequest studentInfoRequest, Long studentInfoId) {
+
+        //!!! Parametreden gelen datalar ile nesneler elde ediliyor
+        Lesson lesson = lessonService.getLessonById(studentInfoRequest.getLessonId()); //DB'ye kayit islemi olacagi icin POJO dönen bir metot ariyoruz
+        StudentInfo getStudentInfo = getStudentInfoById(studentInfoId);
+        EducationTerm educationTerm = educationTermService.getById(studentInfoRequest.getEducationTermId());
+
+        //!!! Dersnotu ortalamasi hesaplaniyor
+        Double notAverage = calculateExamAverage(studentInfoRequest.getMidtermExam(), studentInfoRequest.getFinalExam());
+
+        //!!! AlfabetikNot belirlenecek
+        Note note = checkLetterGrade(notAverage);
+
+        //!!! DTO-->POJO dönüsümü
+        StudentInfo studentInfo = studentInfoMapper.createUpdatedStudent(studentInfoRequest, studentInfoId, lesson, educationTerm, note, notAverage);
+        studentInfo.setStudent(getStudentInfo.getStudent()); //PutMapping yaptigimiz icin degisiklik yapmasak da bu alanlari burada aynen setlemeliyiz
+        studentInfo.setTeacher(getStudentInfo.getTeacher()); //PutMapping yaptigimiz icin degisiklik yapmasak da bu alanlari burada aynen setlemeliyiz
+
+        //!!! DB'ye kayit islemi
+        StudentInfo updatedStudentInfo = studentInfoRepository.save(studentInfo);
+
+        //!!! Response nesnesi olusturuluyor
+        return ResponseMessage.<StudentInfoResponse>builder()
+                .message("Student Info Updated Successfully")
+                .httpStatus(HttpStatus.OK)
+                .object(studentInfoMapper.createResponse(updatedStudentInfo))
+                .build();
+    }
+
+    private StudentInfo getStudentInfoById(Long studentInfoId) {
+
+        if (!studentInfoRepository.existsByIdEquals(studentInfoId)) {
+            throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND, studentInfoId));
+        }
+        return studentInfoRepository.findByIdEquals(studentInfoId);
+    }
+
+    // Not: getStudentInfoById() *****************************************************************************************************************
+    public Page<StudentInfoResponse> getAllForAdmin(Pageable pageable) {
+
+        return studentInfoRepository.findAll(pageable).map(studentInfoMapper::createResponse);
+    }
+
+    // Not: getAllForTeacher() ******************************************************************************************************************
+    public Page<StudentInfoResponse> getAllTeacher(Pageable pageable, String username) {
+
+        //ÖDEV : alttaki metotdaki ya yoksa metodunu burayada yapalim
+
+        return studentInfoRepository.findByTeacherId_UsernameEquals(username, pageable).map(studentInfoMapper::createResponse);
+    }
+
+    // Not: getAllForStudent() ******************************************************************************************************************
+    public Page<StudentInfoResponse> getAllStudentInfoByStudent(String username, Pageable pageable) {
+
+        boolean student = studentService.existByUsername(username);
+
+        if (!student) throw new ResourceNotFoundException(Messages.NOT_FOUND_USER_MESSAGE);
+        return studentInfoRepository.findByStudentId_UsernameEquals(username, pageable).map(studentInfoMapper::createResponse);
+    }
+
+    // Not: getStudentInfoByStudentId() ***********************************************************************************************************
+    public List<StudentInfoResponse> getStudentInfoByStudentId(Long studentId) {
+
+        if (!studentService.existById(studentId)) {
+            throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER2_MESSAGE, studentId));
+        }
+
+        if (!studentInfoRepository.existsByStudent_IdEquals(studentId)) {
+            throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND_BY_STUDENT_ID, studentId));
+        }
+
+        return studentInfoRepository.findByStudent_IdEquals(studentId)
+                .stream()
+                .map(studentInfoMapper::createResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Not: getStudentInfoById() ********************************************************************************************************************
+    public StudentInfoResponse findStudentInfoById(Long id) {
+
+        if (!studentInfoRepository.existsByIdEquals(id)) {
+            throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND, id));
+        }
+
+        return studentInfoMapper.createResponse(studentInfoRepository.findByIdEquals(id));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
