@@ -35,6 +35,11 @@ public class LessonProgram implements Serializable {
     private LocalTime stopTime;
 
     @ManyToMany
+    @JoinTable(
+            name = "lessson_porgram_lesson",
+            joinColumns = @JoinColumn(name = "lesson_program_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id")
+    )
     private Set<Lesson> lesson;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -49,7 +54,8 @@ public class LessonProgram implements Serializable {
     private Set<Student> students;
 
     //!!! @PreRemove yazilacak
-    @PreRemove //Bir islem yapmadan önce yapilacaklar - Kayit silindiginde, Student'deki ve Teacher'deki LessonProgram iliskisini ve recordunu siliyoruz.
+    @PreRemove
+    //Bir islem yapmadan önce yapilacaklar - Kayit silindiginde, Student'deki ve Teacher'deki LessonProgram iliskisini ve recordunu siliyoruz.
     private void removeLessonProgramFromStudent() {
         teachers.forEach((t) -> {
             t.getLessonsProgramList().remove(this);
