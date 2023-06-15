@@ -224,6 +224,17 @@ public class StudentService implements Serializable {
                 .map(lessonProgramTeacherStudentMapper::createStudentResponse)
                 .collect(Collectors.toList());
     }
+
+    // NOT: StudentInfoService icin yazilan metotlar
+    public boolean existByUsername(String username) {
+
+        return studentRepository.existsByUsername(username);
+    }
+
+    public boolean existById(Long studentId) {
+
+        return studentRepository.existsById(studentId);
+    }
 }
 
 
