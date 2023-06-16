@@ -4,6 +4,7 @@ import com.schoolmanagement.payload.request.StudentInfoRequestWithoutTeacherId;
 import com.schoolmanagement.payload.request.UpdateStudentInfoRequest;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.StudentInfoResponse;
+import com.schoolmanagement.payload.response.TeacherResponse;
 import com.schoolmanagement.service.StudentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -118,9 +119,18 @@ public class StudentInfoController {
     }
 
 
-//ÖDEV
+    //ÖDEV
     // Not: getAllWithPage() *************************************************************************************************************************
-
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @GetMapping("/search")
+    public Page<StudentInfoResponse> search(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "startDate") String sort,
+            @RequestParam(value = "type", defaultValue = "desc") String type
+    ) {
+        return studentInfoService.search(page, size, sort, type);
+    }
 }
 
 
