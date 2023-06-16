@@ -25,13 +25,17 @@ public class Messages {
     public static final String TIME_NOT_VALID_MESSAGE = "Error: incorrect time";
 
     public static final String LESSON_PROGRAM_NOT_FOUND_MESSAGE = "Error: Lesson Program not found";
-
     public static final String LESSON_PROGRAM_EXIST_MESSAGE = "Error: Course schedule can not be selected for the same hour and date";
 
-    public static final String NOT_FOUND_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s not found";
+    public static final String NOT_FOUND_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s not found"; //%s --> string format
+    public static final String NOT_FOUND_ADVISOR_MESSAGE_WITH_USERNAME = "Error: Advisor Teacher with username %s not found";
 
     public static final String STUDENT_INFO_NOT_FOUND = "Error: Student Info with id %d not found";
     public static final String STUDENT_INFO_NOT_FOUND_BY_STUDENT_ID = "Error: Student Info with  student id %d not found";
+
+    public static final String MEET_EXIST_MESSAGE = "Error: Meet not found";
+    public static final String MEET_NOT_FOUND_MESSAGE = "Error: Meet with id %d not found" ; //%d --> decimal format
+
 }
 
 
