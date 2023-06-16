@@ -66,7 +66,7 @@ public class AdvisorTeacherService implements Serializable {
 
     //Not: TeacherService icin gerekli metodlar ********************************************************************************************************************
 
-        //Not: SaveAdvisorTeacher() ********************************************************************************************************************************
+    //Not: SaveAdvisorTeacher() ********************************************************************************************************************************
     public void saveAdvisorTeacher(Teacher teacher) {
         AdvisorTeacher advisorTeacherBuilder = AdvisorTeacher.builder()
                 .teacher(teacher)
@@ -76,7 +76,7 @@ public class AdvisorTeacherService implements Serializable {
         advisorTeacherRepository.save(advisorTeacherBuilder);
     }
 
-         //Not: updateAdvisorTeacher() ********************************************************************************************************************************
+    //Not: updateAdvisorTeacher() ********************************************************************************************************************************
     public void updateAdvisorTeacher(boolean status, Teacher teacher) {
 
         // !!! teacherId ile iliskilendirilmis AdvisorTeacher nesnesini DB den bulup getiriyoruz
@@ -104,6 +104,13 @@ public class AdvisorTeacherService implements Serializable {
     //NOT : StudentService icin gerekli metod ***************************************************************************************************
     public Optional<AdvisorTeacher> getAdvisorTeacherGetById(Long id) {
         return advisorTeacherRepository.findById(id);
+    }
+
+
+    //NOT : MeetService icin gerekli metod *******************************************************************************************************
+    public Optional<AdvisorTeacher> getAdvisorTeacherByUsername(String username) {
+
+        return advisorTeacherRepository.findByTeacher_UsernameEquals(username);
     }
 }
 

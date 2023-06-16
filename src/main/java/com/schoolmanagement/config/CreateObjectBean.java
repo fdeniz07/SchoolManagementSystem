@@ -62,7 +62,16 @@ public class CreateObjectBean {
     public StudentInfoMapper studentInfoMapper() {
         return new StudentInfoMapper();
     }
+
+    @Bean
+    public MeetMapper meetMapper() {
+        return new MeetMapper();
+    }
+
 }
+
+
+
 
 
 
