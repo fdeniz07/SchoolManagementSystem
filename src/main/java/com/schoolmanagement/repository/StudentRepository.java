@@ -36,7 +36,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     //oradaki teacherId ile teacher tablosuna git ve ilgili teacher'in username'ini getir diyerek 3 tablo arasinda join kurmus oluyoruz.--> JPQL ile
     //@Query(value="SELECT s FROM Student s JOIN s.advisorTeacher at JOIN at.teacher t WHERE t.username=:username") --> SQL dilinde yazimi
     List<Student> getStudentByAdvisorTeacher_Username(String username);
+
+    @Query("SELECT s FROM Student s WHERE s.id IN :id") //Verilen id ya da id lere göre ögrencileri getir
+    List<Student> findByIdsEquals(Long[] id);
 }
+
+
 
 
 

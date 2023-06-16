@@ -235,6 +235,11 @@ public class StudentService implements Serializable {
 
         return studentRepository.existsById(studentId);
     }
+
+    // NOT: MeetService icin yazilan metotlar
+    public List<Student> getStudentByIds(Long[] studentIds) {
+        return studentRepository.findByIdsEquals(studentIds);
+    }
 }
 
 

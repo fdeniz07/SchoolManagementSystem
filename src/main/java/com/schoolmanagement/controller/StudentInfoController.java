@@ -53,7 +53,7 @@ public class StudentInfoController {
     }
 
     // Not: getAllForAdmin() *********************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN'")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/getAllForAdmin")
     public ResponseEntity<Page<StudentInfoResponse>> getAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -68,7 +68,7 @@ public class StudentInfoController {
 
     // Not: getAllForTeacher() ******************************************************************************************************************
     // -->Bir ögretmen kendi ögrencilerinin bilgilerini almak istedigi zaman bu method calisacak
-    @PreAuthorize("hasAnyAuthority('TEACHER'")
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
     @GetMapping("/getAllForTeacher")
     public ResponseEntity<Page<StudentInfoResponse>> getAllForTeacher(
             HttpServletRequest httpServletRequest,
