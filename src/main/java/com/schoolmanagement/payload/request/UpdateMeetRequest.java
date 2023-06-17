@@ -18,16 +18,16 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class MeetRequestWithoutId implements Serializable {
+public class UpdateMeetRequest implements Serializable {
 
     @NotNull(message = "Please enter description")
-    @Size(min = 2,max = 250,message = "Description should be at least 2 chars") //kullancidan alinan aciklamalar mutlaka size kisitlamasi girilmelidir.
-    @Pattern(regexp = "\\A(?!\\s*\\Z).+" ,message="Description must consist of the characters .")
+    @Size(min = 2, max = 250, message = "Your description schould be at least 2 chars")
+    @Pattern(regexp = "\\A(?!\\s*\\Z).+", message = "Description must consist of the characters .")
     private String description;
 
     @NotNull(message = "Please enter day")
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
-    @Future //meeting tarihi bugünün tarihinden sonra olmalidir
+    @Future
     private LocalDate date;
 
     @NotNull(message = "Please enter start time")
@@ -39,7 +39,7 @@ public class MeetRequestWithoutId implements Serializable {
     private LocalTime stopTime;
 
     @NotNull(message = "Please select students")
-    private Long[] studentIds; // TODO : Set ?
+    private Long[] studentIds;
 }
 
 

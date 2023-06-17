@@ -1,6 +1,7 @@
 package com.schoolmanagement.payload.mappers;
 
 import com.schoolmanagement.entity.concretes.Meet;
+import com.schoolmanagement.payload.request.UpdateMeetRequest;
 import com.schoolmanagement.payload.response.MeetResponse;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,29 @@ public class MeetMapper {
                 .students(meet.getStudentList())
                 .build();
     }
+
+    //DTO --> POJO dönüsümü
+    public Meet createUpdatedMeet(UpdateMeetRequest updateMeetRequest, Long id) {
+        return Meet.builder()
+                .id(id)
+                .startTime(updateMeetRequest.getStartTime())
+                .stopTime(updateMeetRequest.getStopTime())
+                .date(updateMeetRequest.getDate())
+                .description(updateMeetRequest.getDescription())
+                .build();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

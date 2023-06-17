@@ -1,6 +1,7 @@
 package com.schoolmanagement.controller;
 
 import com.schoolmanagement.payload.request.MeetRequestWithoutId;
+import com.schoolmanagement.payload.request.UpdateMeetRequest;
 import com.schoolmanagement.payload.response.MeetResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.service.MeetService;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/studentInfo")
+@RequestMapping("/meet")
 @RequiredArgsConstructor
 public class MeetController {
 
@@ -64,7 +65,54 @@ public class MeetController {
         return ResponseEntity.ok(meet);
     }
 
+    //Not: getAllMeetByAdvisorTeacherAsList() *******************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @GetMapping("/getAllMeetByAdvisorTeacherAsList")
+    public ResponseEntity<List<MeetResponse>> getAllMeetByAdvisorTeacherAsList(HttpServletRequest httpServletRequest) {
+
+        String username = (String) httpServletRequest.getAttribute("username");
+        List<MeetResponse> meet = meetService.getAllMeetByAdvisorTeacherAsList(username);
+        return ResponseEntity.ok(meet);
+    }
+
+    //Not: delete() **********************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @DeleteMapping("/delete/{meetId}")
+    public ResponseMessage<?> delete(@PathVariable Long meetId) {
+        return meetService.delete(meetId);
+    }
+
+    //Not: update() **********************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @PutMapping("/update/{meetId}")
+    public ResponseMessage<MeetResponse> update(@RequestBody @Valid UpdateMeetRequest meetRequest, @PathVariable Long meetId) {
+
+        return meetService.update(meetRequest, meetId);
+    }
+
+    // Not :  getAllMeetByStudent() *******************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('STUDENT')")
+    @GetMapping("/getAllMeetByStudent")
+    public List<MeetResponse> getAllMeetByStudent(HttpServletRequest httpServletRequest) {
+        String username = (String) httpServletRequest.getAttribute("username");
+        return meetService.getAllMeetByStudentByUsername(username);
+    }
+
+    // Not :  getAllWithPage() *************************************************************************************************************************
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/search")
+    public Page<MeetResponse> getAllWithPage(
+            HttpServletRequest httpServletRequest,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        return meetService.search(page, size);
+    }
 }
+
+
+
+
 
 
 
