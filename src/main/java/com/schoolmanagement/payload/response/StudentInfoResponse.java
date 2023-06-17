@@ -21,11 +21,11 @@ public class StudentInfoResponse {
     private Integer absentee;
     private String infoNote;
     private String lessonName;
-    private Integer creditScore;
+    private int creditScore;
     private boolean isCompulsory;
     private Term educationTerm;
     private Double average;
-    private Note note;
+    private Note Note;
     private StudentResponse studentResponse;
 }
 

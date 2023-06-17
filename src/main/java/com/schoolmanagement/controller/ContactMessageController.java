@@ -31,7 +31,7 @@ public class ContactMessageController {
     
     //Not: getAll() ********************************************************************************************************************************
     @GetMapping("/getAll")
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')") //Belirttigimiz kullanicilar yetkilendirilsin
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')") //Belirttigimiz kullanicilar yetkilendirilsin
     public Page<ContactMessageResponse> getAll( //Birden fazla mesaj olabileceginde getAll methodunda Page yapisi kullanacagiz
                                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                                 @RequestParam(value = "size", defaultValue = "10") int size,
@@ -43,7 +43,7 @@ public class ContactMessageController {
 
     //Not: searchByEmail() *************************************************************************************************************************
     @GetMapping("/searchByEmail")
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')") //Belirttigimiz kullanicilar yetkilendirilsin
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')") //Belirttigimiz kullanicilar yetkilendirilsin
     public Page<ContactMessageResponse> searchByEmail(
                                                        @RequestParam(value = "email") String email,
                                                        @RequestParam(value = "page", defaultValue = "0") int page,
@@ -56,7 +56,7 @@ public class ContactMessageController {
 
     //Not: searchBySubject() ***********************************************************************************************************************
     @GetMapping("/searchBySubject")
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')") //Belirttigimiz kullanicilar yetkilendirilsin
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')") //Belirttigimiz kullanicilar yetkilendirilsin
     public Page<ContactMessageResponse> searchBySubject(
                                                        @RequestParam(value = "subject") String subject,
                                                        @RequestParam(value = "page", defaultValue = "0") int page,

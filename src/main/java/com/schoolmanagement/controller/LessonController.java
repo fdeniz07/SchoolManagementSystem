@@ -22,7 +22,7 @@ public class LessonController {
     private final LessonService lessonService;
 
     //Not: save() **************************************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @PostMapping("/save") //http://localhost:8080/lessons/save
     public ResponseMessage<LessonResponse> save(@RequestBody @Valid LessonRequest lesson) {
 
@@ -30,28 +30,28 @@ public class LessonController {
     }
 
     // Not :  delete() ************************************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @DeleteMapping("/delete/{id}") //http://localhost:8080/lessons/delete/1
     public ResponseMessage deleteLesson(@PathVariable Long id) {
         return lessonService.deleteLesson(id);
     }
 
     //Not: getLessonByName() ******************************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @RequestMapping("/getLessonByName") //http://localhost:8080/lessons/getLessonByName?lessonName=Math
     public  ResponseMessage<LessonResponse> getLessonByLessonName(@RequestParam String lessonName){
         return lessonService.getLessonByLessonName(lessonName);
     }
 
     //Not: getAllLesson() **********************************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')") //TODO --> TEACHER ya da STUDENT eklenebilir mi
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')") //TODO --> TEACHER ya da STUDENT eklenebilir mi
     @GetMapping("/getAll")  // http://localhost:8080/lessons/getAll
     public List<LessonResponse> getAllLesson() {
         return lessonService.getAllLesson();
     }
 
     //Not: getAllWithPage() ********************************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @GetMapping("/search") // http://localhost:8080/lessons/search
     public Page<LessonResponse> search(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -63,7 +63,7 @@ public class LessonController {
     }
 
     //Not: getAllLessonByLessonIds() *************************************************************************************************************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @GetMapping("/getAllLessonByLessonId")  // http://localhost:8080/lessons/getAllLessonByLessonId
     public Set<Lesson> getAllLessonByLessonId(@RequestParam(name = "lessonId") Set<Long> idList){
         return lessonService.getLessonByLessonIdList(idList);

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -239,6 +240,11 @@ public class StudentService implements Serializable {
     // NOT: MeetService icin yazilan metotlar
     public List<Student> getStudentByIds(Long[] studentIds) {
         return studentRepository.findByIdsEquals(studentIds);
+    }
+
+    public Optional<Student> getStudentByUserNameForOptional(String username) {
+
+        return studentRepository.findByUsernameEqualsForOptional(username);
     }
 }
 

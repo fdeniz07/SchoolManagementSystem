@@ -23,7 +23,7 @@ public class LessonProgramTeacherStudentMapper {
                 .startTime(lessonProgram.getStartTime())
                 .stopTime(lessonProgram.getStopTime())
                 .lessonProgramId(lessonProgram.getId())
-                .lessonName(lessonProgram.getLesson())
+                //.lessonName(lessonProgram.getLesson()) //-->burasi sonsuz döngüye(recursive yapiya) soktugu icin yoruma aldim
                 //!!! Teacher yazilinca eklendi
                 .teachers(lessonProgram.getTeachers().stream().map(this::createTeacherResponse).collect(Collectors.toSet()))
                 //!!! Student yazilinca eklendi
