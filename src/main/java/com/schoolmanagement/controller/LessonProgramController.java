@@ -106,7 +106,15 @@ public class LessonProgramController {
 
 
 
-
+/*
+  {
+          "day": "MONDAY",
+          "startTime": "09:00",
+          "stopTime": "11:00",
+          "lessonIdList": [1, 2],
+          "educationTermId": 1
+        }
+ */
 
 
 
