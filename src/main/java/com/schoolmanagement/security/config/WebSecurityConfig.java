@@ -82,7 +82,10 @@ public class WebSecurityConfig {
             "/*.js",
             "/*.json",
             "/contactMessages/save",
-            "/auth/login"
+            "/auth/login",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger*/**"
     };
 
     @Bean
