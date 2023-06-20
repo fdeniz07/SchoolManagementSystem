@@ -13,6 +13,7 @@ import com.schoolmanagement.payload.request.StudentRequest;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.StudentResponse;
 import com.schoolmanagement.repository.StudentRepository;
+import com.schoolmanagement.utils.CheckParameterUpdateMethod;
 import com.schoolmanagement.utils.CheckSameLessonProgram;
 import com.schoolmanagement.utils.CheckUniqueFields;
 import com.schoolmanagement.utils.Messages;
@@ -122,7 +123,10 @@ public class StudentService implements Serializable {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_ADVISOR_MESSAGE, studentRequest.getAdvisorTeacherId())));
 
         //!!! Duplicate kontrolü
-        checkUniqueFields.checkDuplicate(studentRequest.getUsername(), studentRequest.getSsn(), studentRequest.getPhoneNumber(), student.getEmail());
+        if (!CheckParameterUpdateMethod.checkParameter(student, studentRequest)) {
+            checkUniqueFields.checkDuplicate(studentRequest.getUsername(), studentRequest.getSsn(), studentRequest.getPhoneNumber(), student.getEmail());
+        }
+
 
         //!!! DTO --> POJO dönüsümü
         UserRole userRole = userRoleService.getUserRole(RoleType.STUDENT);
