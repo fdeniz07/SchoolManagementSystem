@@ -21,7 +21,7 @@ public class TeacherRequest extends BaseUserRequest {
     private Set<Long> lessonsIdList;
 
     @NotNull(message = "Please select isAdvisor Teacher")
-    private boolean isAdvisorTeacher; //Lombok Boolean türündeki wrapper class larda is... ile baslayan kelimelerin getter'inde sorun yasatiyor.
+    private boolean isAdvisorTeacher = true; //Lombok Boolean türündeki wrapper class larda is... ile baslayan kelimelerin getter'inde sorun yasatiyor.
 
     @NotNull(message = "Please enter your email")
     @Email(message = "Please enter valid email")
