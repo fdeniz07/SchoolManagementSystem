@@ -43,6 +43,7 @@ public class EmailService {
         message.setFrom(new InternetAddress(from));
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
         message.setText(mailMessage);
+        message.setSubject(subject);
         return message;
     }
 
