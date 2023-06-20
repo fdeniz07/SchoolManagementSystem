@@ -72,7 +72,13 @@ public class LessonController {
     //TODO : Update metoduda yazilacak
 }
 
-
+/*
+{
+          "lessonName": "Kimya",
+          "creditScore": 5,
+          "isCompulsory": true
+}
+ */
 
 
 
