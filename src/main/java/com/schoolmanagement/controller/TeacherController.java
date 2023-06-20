@@ -89,7 +89,22 @@ public class TeacherController {
 
 }
 
-
+/*
+{
+          "username": "teacher1",
+          "name": "teacher",
+          "surname": "teacher",
+          "birthDay": "1975-08-15",
+          "ssn": "123-12-4289",
+          "birthPlace": "US",
+          "password": "123456",
+          "phoneNumber": "555-003-4527",
+          "gender": "MALE",
+          "lessonsIdList": [1],
+          "isAdvisorTeacher": true,
+          "email": "vvv@vvv.com"
+        }
+ */
 
 
 
