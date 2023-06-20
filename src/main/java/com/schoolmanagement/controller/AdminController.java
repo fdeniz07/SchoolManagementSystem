@@ -31,6 +31,18 @@ public class AdminController {
         return ResponseEntity.ok(adminService.save(adminRequest));
     }
 
+    /*
+        "username": "john_doe",
+        "password": "12345678",
+     */
+    
+    /*
+        var jsonDaata = pm.response.json();
+        var a = jsonDaata.token;
+        if(a!=null){
+        pm.globals.set("token",a);
+        }
+     */
 
     /** save
      * {
