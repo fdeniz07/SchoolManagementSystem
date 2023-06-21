@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/lessonProgram")
+@RequestMapping("/lessonPrograms")
 @RequiredArgsConstructor
 public class LessonProgramController {
 
@@ -103,9 +103,6 @@ public class LessonProgramController {
         return lessonProgramService.search(page,size,sort,type);
     }
 }
-
-
-
 /*
   {
           "day": "MONDAY",
