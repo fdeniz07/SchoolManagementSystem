@@ -78,8 +78,22 @@ public class EducationTermController {
     }
 }
 
+/*
+        {
+          "term": "FALL_SEMESTER",
+          "startDate": "2023-09-01",
+          "endDate": "2023-12-31",
+          "lastRegistrationDate": "2022-12-20"
+        }
+ */
 
-
+/*        {
+          "term": "SPRING_SEMESTER",
+          "startDate": "2023-05-01",
+          "endDate": "2023-06-30",
+          "lastRegistrationDate": "2022-6-20"
+        }
+ */
 
 
 
