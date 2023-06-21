@@ -8,7 +8,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class LessonProgram implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private Day day;
@@ -33,7 +32,7 @@ public class LessonProgram implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "US")
     private LocalTime stopTime;
 
-    @JsonIgnore
+    @JsonIgnore //Recursive yapiya girmesini önlemek icin yazdik
     @ManyToMany
     @JoinTable(
             name = "lessson_porgram_lesson",
