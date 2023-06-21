@@ -45,8 +45,8 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //!!! JWT Token olusturuluyor
-        String token = "Bearer " + jwtUtils.generateJwtToken(authentication); //Client tarafina önünde "Bearer " eklenerek gidecek
-
+        //String token = "Bearer " + jwtUtils.generateJwtToken(authentication); //Client tarafina önünde "Bearer " eklenerek gidecek
+        String token = jwtUtils.generateJwtToken(authentication); //“Bearer ” ifadesini kaldiriyoruz. Bu sayede POSTMAN üzerinden bir degiskene token’i atayabileceğiz.
 
         //Buradan asagasi Opsiyonel ve bu projeye özgü!
 
