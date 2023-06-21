@@ -28,9 +28,9 @@ public class TeacherController {
         return teacherService.save(request);
     }
 
-    //Not: getAllTeacher() ****************************************************************************************************************************
+    //Not: getAll() ****************************************************************************************************************************
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-    @PostMapping("/getAllTeacher") //http://localhost:8080/teachers/getAllTeacher
+    @GetMapping("/getAll") //http://localhost:8080/teachers/getAll
     public List<TeacherResponse> getAllTeacher() {
 
         return teacherService.getAllTeacher();
@@ -59,7 +59,7 @@ public class TeacherController {
         return  teacherService.deleteTeacher(id);
     }
 
-    // Not: getTeacherById() ******************************************************************************************************************************
+    // Not: getSavedTeacherById() ******************************************************************************************************************************
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     @GetMapping("/getSavedTeacherById/{id}")
     public ResponseMessage<TeacherResponse> getSavedTeacherById(@PathVariable Long id){
@@ -92,17 +92,32 @@ public class TeacherController {
 /*
 {
           "username": "teacher1",
-          "name": "teacher",
-          "surname": "teacher",
+          "name": "Ali",
+          "surname": "Candan",
           "birthDay": "1975-08-15",
-          "ssn": "123-12-4289",
-          "birthPlace": "US",
-          "password": "123456",
-          "phoneNumber": "555-003-4527",
+          "ssn": "123-12-4211",
+          "birthPlace": "TR",
+          "password": "12345678",
+          "phoneNumber": "555-003-4511",
           "gender": "MALE",
           "lessonsIdList": [1],
           "isAdvisorTeacher": true,
-          "email": "vvv@vvv.com"
+          "email": "ali.candan@test.com"
+        }
+
+         {
+          "username": "teacher2",
+          "name": "teacher2",
+          "surname": "teacher",
+          "birthDay": "1975-08-15",
+          "ssn": "123-02-4289",
+          "birthPlace": "US",
+          "password": "12345678",
+          "phoneNumber": "555-013-4527",
+          "gender": "MALE",
+          "lessonsIdList": [2],
+          "isAdvisorTeacher": true,
+          "email": "vav@vvv.com"
         }
  */
 

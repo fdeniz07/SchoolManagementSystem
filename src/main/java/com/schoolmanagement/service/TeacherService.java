@@ -83,7 +83,7 @@ public class TeacherService implements Serializable {
                 .build();
     }
 
-    //Not: getAllTeacher() ****************************************************************************************************************************
+    //Not: getAll() ****************************************************************************************************************************
     public List<TeacherResponse> getAllTeacher() {
 
         return teacherRepository.findAll()
