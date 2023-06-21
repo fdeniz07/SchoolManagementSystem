@@ -1,9 +1,10 @@
 package com.schoolmanagement.repository;
 
 import com.schoolmanagement.entity.concretes.Student;
-import com.schoolmanagement.payload.response.StudentResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,16 +33,22 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Optional<Student> findByUsername(String username); //OrElseThrow icin null kontrolü yapmak icin Optional ekledik
 
-    @Query(value = "SELECT s FROM Student s WHERE s.advisorTeacher.teacher.username =:username") //ilgili ögrencinin advisorTeacher tablosuna git,
-    //oradaki teacherId ile teacher tablosuna git ve ilgili teacher'in username'ini getir diyerek 3 tablo arasinda join kurmus oluyoruz.--> JPQL ile
-    //@Query(value="SELECT s FROM Student s JOIN s.advisorTeacher at JOIN at.teacher t WHERE t.username=:username") --> SQL dilinde yazimi
+    @Query(value = "SELECT s FROM Student s WHERE s.advisorTeacher.teacher.username =:username")
+        //ilgili ögrencinin advisorTeacher tablosuna git,
+        //oradaki teacherId ile teacher tablosuna git ve ilgili teacher'in username'ini getir diyerek 3 tablo arasinda join kurmus oluyoruz.--> JPQL ile
+        //@Query(value="SELECT s FROM Student s JOIN s.advisorTeacher at JOIN at.teacher t WHERE t.username=:username") --> SQL dilinde yazimi
     List<Student> getStudentByAdvisorTeacher_Username(String username);
 
-    @Query("SELECT s FROM Student s WHERE s.id IN :id") //Verilen id ya da id lere göre ögrencileri getir
+    @Query("SELECT s FROM Student s WHERE s.id IN :id")
+        //Verilen id ya da id lere göre ögrencileri getir
     List<Student> findByIdsEquals(Long[] id);
 
     @Query("SELECT s FROM Student s WHERE s.username=:username ")
     Optional<Student> findByUsernameEqualsForOptional(String username);
+
+    @Modifying //JPQL in sahip oldugu özelligi degistirmek istersek
+    @Query("DELETE FROM Student s WHERE s.id=:id")
+    void deleteById(@Param("id") Long id);
 }
 
 

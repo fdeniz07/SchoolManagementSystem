@@ -80,7 +80,7 @@ public class StudentService implements Serializable {
     }
 
     public int lastNumber() {
-        if (studentRepository.findStudent()) {
+        if (!studentRepository.findStudent()) {
             return 1000;
         }
         return studentRepository.getLastStudentNumber() + 1;
@@ -123,10 +123,9 @@ public class StudentService implements Serializable {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_ADVISOR_MESSAGE, studentRequest.getAdvisorTeacherId())));
 
         //!!! Duplicate kontrolü
-        if (!CheckParameterUpdateMethod.checkParameter(student, studentRequest)) {
+        if (!CheckParameterUpdateMethod.checkParameter(student, studentRequest)) { //Eger parametrelerdeki Data degisirse asagidakileri kontrol et
             checkUniqueFields.checkDuplicate(studentRequest.getUsername(), studentRequest.getSsn(), studentRequest.getPhoneNumber(), student.getEmail());
         }
-
 
         //!!! DTO --> POJO dönüsümü
         UserRole userRole = userRoleService.getUserRole(RoleType.STUDENT);

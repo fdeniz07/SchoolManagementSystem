@@ -112,7 +112,23 @@ public class StudentController {
     }
 }
 
-
+/*
+    {
+  "username": "student1",
+  "name": "Sara",
+  "surname": "Isabel",
+  "birthDay": "1990-02-02",
+  "ssn": "083-45-1111",
+  "birthPlace": "Sydney",
+  "password": "12345678",
+  "phoneNumber": "595-813-4567",
+  "gender": "FEMALE",
+  "motherName": "Jane",
+  "fatherName": "Doe",
+  "email": "aba@example.com",
+  "advisorTeacherId": 2
+}
+ */
 
 
 
