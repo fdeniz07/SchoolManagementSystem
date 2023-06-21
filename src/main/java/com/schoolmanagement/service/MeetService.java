@@ -86,10 +86,10 @@ public class MeetService implements Serializable {
             LocalTime existingStartTime = meet.getStartTime();
             LocalTime existingStopTime = meet.getStopTime();
 
-            if (meet.getDate().equals(date) && ((startTime.isAfter(existingStartTime) && startTime.isBefore(existingStopTime)) || //yenisi eskisinin icinde mi
+            if (!(meet.getDate().equals(date) && ((startTime.isAfter(existingStartTime) && startTime.isBefore(existingStopTime)) || //yenisi eskisinin icinde mi
                     (stopTime.isAfter(existingStartTime) && stopTime.isBefore(existingStopTime)) || //yenisinin stopu eskisinin (bas-bitis) arasinda mi
                     (startTime.isBefore(existingStartTime) && stopTime.isAfter(existingStopTime)) || //yenisi eskisini kapsiyor mu
-                    (startTime.equals(existingStartTime) && stopTime.equals(existingStopTime)))) { //eskisi ve yenisi ayni zaman diliminde mi
+                    (startTime.equals(existingStartTime) && stopTime.equals(existingStopTime))))) { //eskisi ve yenisi ayni zaman diliminde mi
                 throw new ConflictException(Messages.MEET_EXIST_MESSAGE);
             }
         }
@@ -163,8 +163,14 @@ public class MeetService implements Serializable {
             throw new BadRequestException(Messages.TIME_NOT_VALID_MESSAGE);
 
         //!!! Toplantiya katilacak ögrenciler icin yeni meeting saatlerinde cakisma var mi kontrolü
-        for (Long studentId : meetRequest.getStudentIds()) {
-            checkMeetConflict(studentId, meetRequest.getDate(), meetRequest.getStartTime(), meetRequest.getStopTime());
+        // !!! if in icinde request den gelen meet ile orjinal meet objesinde date,startTime ve stoptime
+        // bilgilerinde degisiklik yapildiysa checkMeetConflict metoduna girmesi saglaniyor
+        if(!(getMeet.getDate().equals(meetRequest.getDate()) &&
+                getMeet.getStartTime().equals(meetRequest.getStartTime()) &&
+                getMeet.getStopTime().equals(meetRequest.getStopTime())) ){
+            for (Long studentId : meetRequest.getStudentIds()) {
+                checkMeetConflict(studentId,meetRequest.getDate(),meetRequest.getStartTime(),meetRequest.getStopTime());
+            }
         }
 
         //!!! Meet'e katilacak olan Student'ler getiriliyor mu?
