@@ -31,35 +31,6 @@ public class AdminController {
         return ResponseEntity.ok(adminService.save(adminRequest));
     }
 
-    /*
-        "username": "john_doe",
-        "password": "12345678",
-     */
-    
-    /*
-        var jsonDaata = pm.response.json();
-        var a = jsonDaata.token;
-        if(a!=null){
-        pm.globals.set("token",a);
-        }
-     */
-
-    /** save
-     * {
-     *   "username": "john_doe",
-     *   "name": "John",
-     *   "surname": "Doe",
-     *   "birthDay": "1990-01-01",
-     *   "ssn": "123-45-6789",
-     *   "birthPlace": "New York",
-     *   "password": "password123",
-     *   "phoneNumber": "555-123-4567",
-     *   "gender": "MALE",
-     *   "built_in" : false
-     * }
-    */
-
-
     //Not: getAll() *********************************************************************************************************************************
     @GetMapping("/getAll") //http://localhost:8080/admin/getAll
     @PreAuthorize("hasAnyAuthority('ADMIN')") //Belirttigimiz kullanicilar yetkilendirilsin
@@ -86,10 +57,32 @@ public class AdminController {
     public ResponseEntity<String> delete(@PathVariable Long id){
 
         return ResponseEntity.ok(adminService.deleteAdmin(id));
-
     }
-
-
-
-
 }
+    /*
+        "username": "john_doe",
+        "password": "12345678",
+     */
+
+    /*
+        var jsonDaata = pm.response.json();
+        var a = jsonDaata.token;
+        if(a!=null){
+        pm.globals.set("token",a);
+        }
+     */
+
+/* save
+ * {
+ *   "username": "john_doe",
+ *   "name": "John",
+ *   "surname": "Doe",
+ *   "birthDay": "1990-01-01",
+ *   "ssn": "123-45-6789",
+ *   "birthPlace": "New York",
+ *   "password": "password123",
+ *   "phoneNumber": "555-123-4567",
+ *   "gender": "MALE",
+ *   "built_in" : false
+ * }
+ */
