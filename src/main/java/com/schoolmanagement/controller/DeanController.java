@@ -72,13 +72,22 @@ public class DeanController {
     ) {
 
         return deanService.search(page, size, sort, type);
-
     }
-
-
 }
 
-
+/*
+        {
+          "username": "dean1",
+          "name": "John",
+          "surname": "Smith",
+          "birthDay": "1990-01-01",
+          "ssn": "123-45-6783",
+          "birthPlace": "New York",
+          "password": "12345678",
+          "phoneNumber": "123-456-7708",
+          "gender": "MALE"
+        }
+ */
 
 
 
