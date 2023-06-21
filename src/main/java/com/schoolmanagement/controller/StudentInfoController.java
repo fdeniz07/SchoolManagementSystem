@@ -4,7 +4,6 @@ import com.schoolmanagement.payload.request.StudentInfoRequestWithoutTeacherId;
 import com.schoolmanagement.payload.request.UpdateStudentInfoRequest;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.payload.response.StudentInfoResponse;
-import com.schoolmanagement.payload.response.TeacherResponse;
 import com.schoolmanagement.service.StudentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -133,7 +132,17 @@ public class StudentInfoController {
     }
 }
 
-
+/*
+ {
+        "educationTermId": 1,
+        "midtermExam": 85.5,
+        "finalExam": 90.0,
+        "absentee": 2,
+        "infoNote": "This is a updated sample info note",
+        "lessonId": 2,
+        "studentId":1
+        }
+ */
 
 
 
