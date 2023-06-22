@@ -43,7 +43,7 @@ public class MeetService implements Serializable {
     public ResponseMessage<MeetResponse> save(String username, MeetRequestWithoutId meetRequest) {
 
         AdvisorTeacher advisorTeacher = advisorTeacherService.getAdvisorTeacherByUsername(username).orElseThrow(() ->
-                new ResourceNotFoundException(String.format(Messages.NOT_FOUND_ADVISOR_MESSAGE_WITH_USERNAME)));
+                new ResourceNotFoundException(String.format(Messages.NOT_FOUND_ADVISOR_MESSAGE_WITH_USERNAME,username)));
 
         //!!! Toplanti saat kontrolü
         if (TimeControl.check(meetRequest.getStartTime(), meetRequest.getStopTime()))
@@ -173,6 +173,7 @@ public class MeetService implements Serializable {
             }
         }
 
+        // TODO: request'ten gelen id'lere ait ogrenci var mi kontrolu neden yapilmiyor?
         //!!! Meet'e katilacak olan Student'ler getiriliyor mu?
         List<Student> students = studentService.getStudentByIds(meetRequest.getStudentIds());
 

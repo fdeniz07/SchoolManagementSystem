@@ -111,7 +111,13 @@ public class MeetController {
 }
 
 /*
-
+       {
+          "description": "Toplanti aciklamasi",
+          "date": "2023-12-21",
+          "startTime": "12:30",
+          "stopTime": "13:30",
+          "studentIds": [4]
+         }
  */
 
 
