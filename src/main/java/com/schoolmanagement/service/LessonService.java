@@ -4,7 +4,6 @@ import com.schoolmanagement.entity.concretes.Lesson;
 import com.schoolmanagement.exception.ConflictException;
 import com.schoolmanagement.exception.ResourceNotFoundException;
 import com.schoolmanagement.payload.request.LessonRequest;
-import com.schoolmanagement.payload.response.LessonProgramResponse;
 import com.schoolmanagement.payload.response.LessonResponse;
 import com.schoolmanagement.payload.response.ResponseMessage;
 import com.schoolmanagement.repository.LessonRepository;
