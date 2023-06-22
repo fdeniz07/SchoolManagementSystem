@@ -112,9 +112,7 @@ public class LessonProgramService {
     public ResponseMessage deleteLessonProgram(Long id) {
 
         // !!! id kontrolu
-        lessonProgramRepository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_MESSAGE, id));
-        });
+        lessonProgramRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_MESSAGE, id)));
 
         lessonProgramRepository.deleteById(id);
 

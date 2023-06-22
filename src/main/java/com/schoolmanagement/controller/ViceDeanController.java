@@ -74,7 +74,19 @@ public class ViceDeanController {
     }
 }
 
-
+/*
+         {
+          "username": "viceDean1",
+          "name": "Vice",
+          "surname": "Dean",
+          "birthDay": "1990-01-01",
+          "ssn": "183-45-5780",
+          "birthPlace": "New York",
+          "password": "12345678",
+          "phoneNumber": "100-416-7890",
+          "gender": "MALE"
+        }
+ */
 
 
 

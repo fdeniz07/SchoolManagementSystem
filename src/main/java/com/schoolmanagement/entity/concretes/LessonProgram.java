@@ -35,7 +35,7 @@ public class LessonProgram implements Serializable {
     @JsonIgnore //Recursive yapiya girmesini önlemek icin yazdik
     @ManyToMany
     @JoinTable(
-            name = "lessson_porgram_lesson",
+            name = "lesson_program_lesson",
             joinColumns = @JoinColumn(name = "lesson_program_id"),
             inverseJoinColumns = @JoinColumn(name = "lesson_id")
     )
