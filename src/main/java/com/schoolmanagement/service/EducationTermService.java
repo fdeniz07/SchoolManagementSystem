@@ -53,12 +53,6 @@ public class EducationTermService {
     //Not: getById() *************************************************************************************************************************************
     public EducationTermResponse get(Long id) {
 
-        //!!! ya yoksa kontrolü
-        //if (educationTermRepository.existsById(id)); //bu metot isimizi görür ama biz kendimiz yazmak istersek
-        if (educationTermRepository.existsByIdEquals(id)) {
-            throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE));
-        }
-
         //!!! POJO --> DTO dönüsümü ile response hazirlaniyor
         return educationTermMapper.createEducationTermResponse(educationTermRepository.findByIdEquals(id));  // findById de calisir ama biz elle yaziyoruz PQL yazmak icin
     }

@@ -11,7 +11,7 @@ public interface EducationTermRepository extends JpaRepository<EducationTerm, Lo
         //extract ile sql deki tarihten yili cekiyoruz
     boolean existsByTermAndYear(Term term, int year);
 
-    @Query("SELECT (count(e) > 0) FROM EducationTerm e WHERE e.id = ?1")
+    @Query("SELECT (count(e)>0) FROM EducationTerm e WHERE e.id= ?1")
     boolean existsByIdEquals(Long id);
 
     @Query("SELECT e FROM EducationTerm e WHERE e.id= ?1")
