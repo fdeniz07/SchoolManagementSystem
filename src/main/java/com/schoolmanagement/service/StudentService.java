@@ -249,6 +249,11 @@ public class StudentService implements Serializable {
 
         return studentRepository.findByUsernameEqualsForOptional(username);
     }
+
+    // NOT: LessonProgramService icin yazilan metotlar
+    public Set<Student> getStudentByIds(List<Long> studentIds){
+        return studentRepository.findByIdsEquals(studentIds);
+    }
 }
 
 

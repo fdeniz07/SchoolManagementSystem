@@ -32,7 +32,8 @@ public class StudentInfoController {
     public ResponseMessage<StudentInfoResponse> save(HttpServletRequest httpServletRequest,
                                                      @RequestBody @Valid StudentInfoRequestWithoutTeacherId request) {
 
-        String username = (String) httpServletRequest.getAttribute("username");
+        //String username = (String) httpServletRequest.getAttribute("username"); //Genel yapi bunu kullaniyor(attribute üzerinden username aliniyor)
+        String username = httpServletRequest.getHeader("username"); // !!! buradaki yapi ise header üzerinden gelecegi icin postman de null gözükmez
         return studentInfoService.save(username, request);
     }
 
@@ -76,7 +77,9 @@ public class StudentInfoController {
 
         //Pageable obje olusturma islemini Service katmaninda yazilmasi best-practice
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        String username = (String) httpServletRequest.getAttribute("username");
+        //String username = (String) httpServletRequest.getAttribute("username");
+        String username = httpServletRequest.getHeader("username"); // !!! buradaki yapi ise header üzerinden gelecegi icin postman de null gözükmez
+
 
         Page<StudentInfoResponse> studentInfoResponse = studentInfoService.getAllTeacher(pageable, username);
 
@@ -94,7 +97,10 @@ public class StudentInfoController {
     ) {
         // Pageable obje olusturma islemini Service katinda yazilmasi best-practice
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        String username = (String) httpServletRequest.getAttribute("username");
+        //String username = (String) httpServletRequest.getAttribute("username");
+        String username = httpServletRequest.getHeader("username"); // !!! buradaki yapi ise header üzerinden gelecegi icin postman de null gözükmez
+
+
         Page<StudentInfoResponse> studentInfoResponse = studentInfoService.getAllStudentInfoByStudent(username, pageable);
         return ResponseEntity.ok(studentInfoResponse);
     }
