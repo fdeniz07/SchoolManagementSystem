@@ -1,5 +1,6 @@
 package com.schoolmanagement.entity.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.schoolmanagement.entity.abstracts.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -17,6 +18,7 @@ import java.util.Set;
 @ToString
 public class Teacher extends User {
 
+    @JsonIgnore
     @OneToOne(mappedBy = "teacher", cascade = CascadeType.PERSIST,orphanRemoval = true)
     //cascade = CascadeType.PERSIST --> biri kaydedilince, digeri de otomatik DB ye kaydediliyor
     //orphanRemoval = true --> biri silinince digerini de sil
@@ -32,6 +34,7 @@ public class Teacher extends User {
     @OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE)
     private List<StudentInfo> studentInfos;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "teacher_lesson_program",
@@ -39,5 +42,4 @@ public class Teacher extends User {
             inverseJoinColumns = @JoinColumn(name = "lesson_program_id")
     )
     private Set<LessonProgram> lessonsProgramList;
-
 }

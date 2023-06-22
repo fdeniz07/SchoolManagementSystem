@@ -228,6 +228,12 @@ public class TeacherService implements Serializable {
 
         return teacherRepository.existsByUsername(username);
     }
+
+    //!!! LessonProgramService icin eklendi
+    public Set<Teacher> getTeacherByIds(List<Long> teacherIdList) {
+
+        return teacherRepository.findByIdsEquals(teacherIdList);
+    }
 }
 
 

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TeacherRepository  extends JpaRepository<Teacher,Long> {
 
@@ -22,4 +23,34 @@ public interface TeacherRepository  extends JpaRepository<Teacher,Long> {
     List<Teacher> getTeacherByNameContaining(String teacherName);
 
     Teacher getTeacherByUsername(String username);
+
+    @Query(value = "SELECT t FROM Teacher t WHERE t.id IN :id") //LessonProgramService icin olusturuldu
+    Set<Teacher> findByIdsEquals(List<Long> id);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
