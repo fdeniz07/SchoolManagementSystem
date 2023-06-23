@@ -32,6 +32,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
 
+    //Mocking icin diger degiskenlerin tanimlanmasi gerekiyor. Save ve Delete icin tam calismiyor
+
     @Mock
     private AdminRepository adminRepository;
 
