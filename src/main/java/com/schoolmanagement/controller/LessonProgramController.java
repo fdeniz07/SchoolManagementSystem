@@ -104,6 +104,8 @@ public class LessonProgramController {
     }
 
     // Not :  update() *******************************************************************************************************************************
+
+//Daha sonra bu endpoint yazilacaktir
 //    @PutMapping("/update/{lessonProgramId}") //http://localhost:8080/update/1
 //    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
 //    public ResponseMessage<LessonProgramResponse> update(
@@ -112,6 +114,8 @@ public class LessonProgramController {
 //    ){
 //        return lessonProgramService.update(lessonProgramId, lessonProgramRequest);
 //    }
+
+
 }
 
 
